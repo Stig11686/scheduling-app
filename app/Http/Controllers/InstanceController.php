@@ -1,0 +1,198 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Cohort;
+use App\Models\Course;
+use App\Models\Instance;
+use App\Models\Trainer;
+use App\Models\ZoomRoom;
+use App\Models\InstanceSession;
+use App\Models\Session;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+
+class InstanceController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+
+    public function index()
+    {
+       $instances = Instance::with(['course', 'cohort'])->get();
+       $zoom_rooms = ZoomRoom::get();
+       $trainers = Trainer::get();
+       $session_data = DB::table('instance_session')
+       ->selectRaw('courses.name as Course_Name,
+                sessions.name as Session_Title,
+               date as Date,
+               trainers.name as Lead_Trainer_Name,
+               zoom_rooms.link as Zoom_Link')
+       ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
+       ->join('courses', 'courses.id', '=', 'instances.course_id')
+       ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
+       ->join('trainers', 'trainers.id', '=', 'instance_session.trainer_id')
+       ->join('zoom_rooms', 'zoom_rooms.id', '=', 'instance_session.zoom_room_id')
+       ->get();
+
+        return view('instances.index', compact('instances', 'session_data', 'zoom_rooms', 'trainers'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $courses = Course::all();
+        $cohorts = Cohort::all();
+        $sessions = Session::all();
+
+        return view('instances.create', compact('courses', 'cohorts', 'sessions'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $instance = Instance::create([
+            'course_id' => $request->input('course_id'),
+            'cohort_id' => $request->input('cohort_id')
+        ]);
+
+        foreach($request->input('sessions') as $session){
+            InstanceSession::create([
+                'instance_id' => $instance->id,
+                'session_id' => $session,
+                'cohort_id' => $request->input('cohort_id')
+            ]);
+        }
+
+        return redirect()->route('instances');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Instance  $instance
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Instance $instance)
+    {
+        return view('instances.edit', compact('instance'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Instance  $instance
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $instance = Instance::with(['course', 'cohort'])->where('id', $id)->get();
+        $trainers = Trainer::all();
+        $zoom_rooms = ZoomRoom::all();
+        $session_data = DB::table('instance_session')
+       ->selectRaw('courses.name as Course_Name,
+                sessions.name as Session_Title,
+               date as Date,
+               instance_session.id as id,
+               instance_session.instance_id as instance_id,
+               instance_session.session_id as session_id
+            ')
+       ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
+       ->join('courses', 'courses.id', '=', 'instances.course_id')
+       ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
+    //    ->join('trainers', 'trainers.id', '=', 'instance_session.trainer_id')
+    //    ->join('zoom_rooms', 'zoom_rooms.id', '=', 'instance_session.zoom_room_id')
+       ->where('instance_id', $id)
+       ->get();
+
+        $sessions = Session::all();
+
+        return view('instances.edit', compact('instance', 'sessions', 'session_data', 'trainers', 'zoom_rooms'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Instance  $instance
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+
+        //REFERS TO THE ADD SESSIONS PAGE
+       if(isset($_POST['session_id'])){
+            $sessions = $_POST['session_id'];
+            foreach($sessions as $session){
+                $instance_id = $request->input('instance_id');
+
+                //does instance id and session id combination exist?
+
+                 $request->validate(
+                    [ Rule::unique('instance_session', 'instance_id')
+                        ->where('session_id', $session)
+                    ]);
+
+
+                InstanceSession::create([
+                    'instance_id' => $instance_id,
+                    'session_id' => $session,
+                    'cohort_id' => $request->input('cohort_id')
+                ]);
+            };
+
+            //TODO - CREATE GOOGLE CALENDAR INVITE
+        } else {
+            //REFERS TO THE INDEX PAGE TO EDIT INDIVIDUAL SESSIONS
+            $session_id = $request->input('instance_session_id');
+            $instance_session = InstanceSession::where('instance_id', $id)->where('session_id', $session_id)->first();
+
+            $instance_session->date = $request->input('date');
+            $instance_session->trainer_id = $request->input('trainer_id');
+            $instance_session->zoom_room_id = $request->input('zoom_room_id');
+
+            $instance_session->save();
+            //TO DO - UPDATE GOOGLE CALENDAR INVITE
+       }
+       return redirect()->route('instances');
+    }
+
+       /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Instance  $instance
+     * @return \Illuminate\Http\Response
+     */
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Instance  $instance
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Instance $instance)
+    {
+        //TODO
+        //https://stackoverflow.com/questions/53553686/laravel-archiving-data-delete-and-insert-to-another-table
+        //find out how to archive this instead of deleting
+        $instance->delete();
+
+        return redirect()->route('instances.index');
+    }
+}
