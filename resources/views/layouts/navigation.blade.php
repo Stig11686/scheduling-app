@@ -19,7 +19,7 @@
                         {{ __('Cohorts') }}
                     </x-nav-link>
                     <x-nav-link :href="route('instances')" :active="request()->routeIs('instances')">
-                        {{ __('Running Courses') }}
+                        {{ __('Schedule') }}
                     </x-nav-link>
                     <x-nav-link :href="route('courses')" :active="request()->routeIs('courses')">
                         {{ __('Courses') }}

@@ -9,6 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if($errors->any())
+                        <div class="bg-red-500 text-white py-4 px-2">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{{ route('zoomRoom.update', ['zoomRoom' => $zoomRoom->id]) }}">
                         @method('PUT')
                         @csrf

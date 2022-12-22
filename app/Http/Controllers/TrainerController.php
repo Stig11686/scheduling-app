@@ -40,7 +40,7 @@ class TrainerController extends Controller
     {
        //TODO - Validate dbs_date - this can currently exists even if trainer does not have a DBS
 
-        $validated = $request->validate([
+       $request->validate([
             'name' => ['required'],
             'email' => ['required'],
         ]);
@@ -101,7 +101,19 @@ class TrainerController extends Controller
      */
     public function update(Request $request, Trainer $trainer)
     {
-       $trainer->update([
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        if($request->input('has_dbs') === 'on'){
+            $request->validate([
+                'dbs_date_active' => 'required',
+                'dbs_cert_path' => 'required'
+            ]);
+        }
+
+        $trainer->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),

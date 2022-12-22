@@ -15,6 +15,13 @@
 
 <x-slot name="slot">
    <div class="max-w-7xl mx-auto">
+    @if($errors->any())
+        <div class="bg-red-500 text-white py-4 px-2">
+            @foreach($errors->all() as $error)
+                <p>{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
    <ul role="list" class="divide-y divide-gray-200">
       @foreach($instances as $instance)
          <li class="mt-2">
@@ -44,8 +51,8 @@
                     </button>
                     </div>
                     <div class="flex items-center ">
-                    <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">
-                        <a href="{{ route('currentcourses.edit', $instance->id ) }}">Add Sessions</a>
+                    <div class="px-2 inline-flex text-xs text-center leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">
+                        <a href="{{ route('currentcourses.edit', $instance->id ) }}">Manage Sessions</a>
                     </div>
                     </div>
                 </div>
@@ -219,18 +226,36 @@
 
 <script>
     const editBtns = document.querySelectorAll('.edit-btn');
+    const submitBtns = document.querySelectorAll('#submit');
+    const inputs = Array.from(document.getElementsByTagName('input'));
+    const selects = Array.from(document.getElementsByTagName('select'));
 
     editBtns.forEach(btn => {
         btn.addEventListener('click', function(e){
             e.preventDefault();
+            submitBtns.forEach(element => {
+                element.classList.add('hidden');
+            });
+            editBtns.forEach(element => {
+                element.classList.remove('hidden');
+            });
+            inputs.forEach(input => {
+                input.disabled = true;
+            });
+            selects.forEach(select => {
+                select.disabled = true;
+            });
+
+
+
             const tr = e.target.parentElement.parentElement;
-            const inputs = Array.from(tr.getElementsByTagName('input'));
-            const selects = Array.from(tr.getElementsByTagName('select'))
-
-            remove_disabled_attribute_from_inputs(inputs);
-            remove_disabled_attribute_from_inputs(selects);
-
             const submitBtn = tr.querySelector('#submit');
+            const rowInputs = Array.from(tr.getElementsByTagName('input'));
+            const rowSelects = Array.from(tr.getElementsByTagName('select'))
+
+            remove_disabled_attribute_from_inputs(rowInputs);
+            remove_disabled_attribute_from_inputs(rowSelects);
+
             btn.classList.add('hidden');
             submitBtn.classList.remove('hidden');
         })

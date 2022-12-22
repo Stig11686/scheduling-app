@@ -5,20 +5,19 @@
         </h2>
     </x-slot>
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if($errors->any())
+                        <div class="bg-red-500 text-white py-4 px-2">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{{ route('trainers.update', $trainer) }}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
@@ -133,14 +132,22 @@
     const dbsDateField = document.getElementById('dbs_date');
     const dbsRenewalDateField = document.getElementById('dbs_renewal_date');
 
-    document.addEventListener('change', function(e) {
-        if(!hasDBSCheckbox.checked){
+    if(!hasDBSCheckbox.checked){
             dbsConditionalQuestions.classList.add('hidden');
+    }
+
+    document.addEventListener('change', function(e) {
+        if(e.target === hasDBSCheckbox){
+            if(hasDBSCheckbox.checked){
+                console.log('checked', e.target);
+            dbsConditionalQuestions.classList.remove('hidden');
             dbsDateField.value = null;
             dbsRenewalDateField.value = null
         } else {
-            dbsConditionalQuestions.classList.remove('hidden')
+            dbsConditionalQuestions.classList.add('hidden')
         }
+        }
+
 
     })
 

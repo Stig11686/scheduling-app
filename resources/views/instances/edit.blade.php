@@ -9,10 +9,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if ($errors->any())
-                        @foreach ($errors->all() as $error)
-                            <div class="bg-red-200 text-white">{{$error}}</div>
-                        @endforeach
+                    @if($errors->any())
+                        <div class="bg-red-500 text-white py-4 px-2">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
                     @endif
                     <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{{route('currentcourses.update', $instance[0]->id)}}">
                         @method('PUT')
@@ -26,23 +28,25 @@
                                 </div>
 
                                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                                     @foreach($sessions as $session)
-                                    <div class="col-span-2">
-                                        <input
-                                            type="checkbox"
-                                            name="session_id[]"
-                                            for="{{ $session->id }}"
-                                            id={{ $session->id }}
-                                            value="{{ $session->id }}"
-                                            @foreach($session_data as $data)
-                                                @if($data->instance_id === $instance[0]->id && $data->session_id === $session->id)
-                                                    checked
-                                                @endif
-                                            @endforeach
-                                        />
-                                        <label for="{{$session->id}}">{{ $session->name}}, {{ $session->id }} </label>
-                                    </div>
-                                @endforeach
+                                       @foreach($sessions as $session)
+                                            <div class="col-span-2">
+                                                <input
+                                                    type="checkbox"
+                                                    name="session_id[]"
+                                                    for="{{ $session->id }}"
+                                                    id={{ $session->id }}
+                                                    value="{{ $session->id }}"
+                                                    @foreach($session_data as $data)
+                                                        @if($data->instance_id === $instance[0]->id && $data->session_id === $session->id)
+                                                            checked
+                                                        @endif
+                                                    @endforeach
+                                                />
+                                                <label for="{{$session->id}}">
+                                                    {{ $session->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
                                 </div>
                             </div>
                         </div>

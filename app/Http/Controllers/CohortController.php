@@ -37,7 +37,7 @@ class CohortController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'name' => ['required'],
             'places' => ['required']
         ]);
@@ -83,6 +83,11 @@ class CohortController extends Controller
      */
     public function update(Request $request, Cohort $cohort)
     {
+        $request->validate([
+            'name' => ['required'],
+            'places' => ['required']
+        ]);
+
         $cohort->update([
             'name' => $request->name,
            'places' => $request->places,

@@ -12,6 +12,7 @@ use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use App\Rules\InstanceSessionValidation;
 
 class InstanceController extends Controller
 {
@@ -114,8 +115,6 @@ class InstanceController extends Controller
        ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
        ->join('courses', 'courses.id', '=', 'instances.course_id')
        ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
-    //    ->join('trainers', 'trainers.id', '=', 'instance_session.trainer_id')
-    //    ->join('zoom_rooms', 'zoom_rooms.id', '=', 'instance_session.zoom_room_id')
        ->where('instance_id', $id)
        ->get();
 
@@ -133,21 +132,46 @@ class InstanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $instance_id = $request->input('instance_id');
         //REFERS TO THE ADD SESSIONS PAGE
        if(isset($_POST['session_id'])){
             $sessions = $_POST['session_id'];
+            $session_data = DB::table('instance_session')
+            ->selectRaw('instance_session.session_id as session_id')
+            ->where('instance_id', $id)
+            ->get()->all();
+
+            $exisiting_session_ids = array_map(function($item){
+                return $item->session_id;
+              }, $session_data);
+
+            $session_ids = array_map(function($item){
+                return intval($item);
+            }, $sessions);
+
+            $removed_sessions = array_diff($exisiting_session_ids, $session_ids);
+
+            if($removed_sessions){
+                foreach($removed_sessions as $session){
+                    //remove session from instance_session table by session id and instance_id
+                    $sqlDelete = "delete from instance_session where session_id=$session and instance_id = $instance_id";
+                    DB::select($sqlDelete);
+                }
+            }
+
+            foreach($session_data as $key => $existing_session){
+                foreach($sessions as $key => $session){
+                    //remove checkbox that's already checked - validation for the creating the instance sessions
+                    if(intval($session) === intval($existing_session->session_id)){
+                        unset($sessions[$key]);
+                        $sessions = array_values($sessions);
+                    }
+                }
+            }
+
+
             foreach($sessions as $session){
-                $instance_id = $request->input('instance_id');
-
-                //does instance id and session id combination exist?
-
-                 $request->validate(
-                    [ Rule::unique('instance_session', 'instance_id')
-                        ->where('session_id', $session)
-                    ]);
-
-
+               $instance_id = $request->input('instance_id');
                 InstanceSession::create([
                     'instance_id' => $instance_id,
                     'session_id' => $session,

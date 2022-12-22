@@ -5,20 +5,17 @@
         </h2>
     </x-slot>
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if($errors->any())
+                        <div class="bg-red-500 text-white py-4 px-2">
+                            @foreach($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     <form class="space-y-8 divide-y divide-gray-200" method="POST" action="{{ route('trainers.store') }}" enctype="multipart/form-data">
                         @method('POST')
                         @csrf
@@ -61,14 +58,14 @@
                                     <div class="sm:col-span-3">
                                         <label for="status" class="block text-sm font-medium text-gray-700">Is Active</label>
                                         <div class="mt-1">
-                                            <input type="checkbox" name="status" id="status" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md" <?php echo ($trainer->status === 1 ? 'checked' : ''); ?>>
+                                            <input type="checkbox" name="status" id="status" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md">
                                         </div>
                                     </div>
 
                                     <div class="sm:col-span-3">
                                         <label for="has_dbs" class="block text-sm font-medium text-gray-700"> Has DBS </label>
                                         <div class="mt-1">
-                                            <input type="checkbox" name="has_dbs" id="has_dbs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md" <?php echo ($trainer->has_dbs === 1 ? 'checked' : ''); ?>>
+                                            <input type="checkbox" name="has_dbs" id="has_dbs" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm border-gray-300 rounded-md">
                                         </div>
                                     </div>
 

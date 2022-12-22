@@ -37,7 +37,7 @@ class ZoomRoomController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+       $request->validate([
             'name' => ['required'],
             'link' => ['required']
         ]);
@@ -81,6 +81,11 @@ class ZoomRoomController extends Controller
      */
     public function update(Request $request, ZoomRoom $zoomRoom)
     {
+        $request->validate([
+            'name' => ['required'],
+            'link' => ['required']
+        ]);
+
         $zoomRoom->update([
             'name' => $request->name,
             'link' => $request->link
