@@ -9,10 +9,10 @@ use App\Models\Trainer;
 use App\Models\ZoomRoom;
 use App\Models\InstanceSession;
 use App\Models\Session;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
-use App\Rules\InstanceSessionValidation;
+use Spatie\GoogleCalendar\Event;
 
 class InstanceController extends Controller
 {
@@ -169,14 +169,22 @@ class InstanceController extends Controller
                 }
             }
 
-
+            //create new sessions on the course instance
             foreach($sessions as $session){
+                $event = new Event();
                $instance_id = $request->input('instance_id');
                 InstanceSession::create([
                     'instance_id' => $instance_id,
                     'session_id' => $session,
                     'cohort_id' => $request->input('cohort_id')
                 ]);
+
+                $event->name = 'Session' . $session;
+                $event->startDateTime = Carbon::now()->addHour();
+                $event->endDateTime = Carbon::now()->addHour();
+
+                $event->save();
+
             };
 
             //TODO - CREATE GOOGLE CALENDAR INVITE

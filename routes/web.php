@@ -12,6 +12,7 @@ use App\Models\Course;
 use App\Models\Funder;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
+use Spatie\GoogleCalendar\Event;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,18 @@ Route::group(['middleware' => ['auth']], function(){
 Route::get('/dashboard', [CourseController::class, 'index'])->name('dashboard');
 
 Route::get('/trainers/{id}', [TrainerController::class, 'show']);
+
+Route::get('/calendar', function(){
+    $e = new Event;
+
+    $e->name = 'Test from app';
+    $e->startDateTime = Carbon\Carbon::now();
+    $e->endDateTime = Carbon\Carbon::now()->addHour();
+
+    $e->save();
+
+    dd($e);
+});
 
 // Route::post('/currentcourses/{id}', [InstanceController::class, 'show']);
 

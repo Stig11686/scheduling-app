@@ -14,3 +14,5 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/app/google-calendar/service-account-credentials.json
+/config/tcg-scheduling-aacd2fb55ccd.json
