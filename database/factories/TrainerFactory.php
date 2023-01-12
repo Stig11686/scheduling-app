@@ -17,7 +17,7 @@ class TrainerFactory extends Factory
     public function definition()
     {
         $name = fake()->name();
-        $status = ['active', 'inactive'];
+        $status = [0, 1];
 
         return [
             'name' => $name,
