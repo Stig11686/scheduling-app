@@ -12,17 +12,19 @@ class Instance extends Model
     protected $fillable = ['course_id', 'cohort_id'];
 
     public function sessions(){
-
-        return $this->belongsToMany(Session::class)->using(InstanceSession::class)->withPivot(['date', 'zoom_room_id', 'trainer_id']);
-
+        return $this->belongsToMany(Session::class)->withPivot(['date', 'zoom_room_id', 'trainer_id']);
     }
 
     public function course(){
         return $this->belongsTo(Course::class);
     }
 
-    function cohort(){
+    public function cohort(){
         return $this->hasOne(Cohort::class, 'id', 'cohort_id');
+    }
+
+    public function getTrainer(){
+        return 'Steve';
     }
 
 }

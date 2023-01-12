@@ -13,7 +13,7 @@ class Session extends Model
     protected $fillable = ['name', 'review_due', 'review_status', 'slides', 'trainer_notes'];
 
     function instances(){
-        return $this->belongsToMany(Instance::class)->using(InstanceSession::class)->withPivot(['date', 'zoom_room_id', 'trainer_id']);
+        return $this->belongsToMany(Instance::class);
     }
 
 }

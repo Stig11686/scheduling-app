@@ -44,6 +44,6 @@ class InstanceSession extends Pivot
     }
 
     public function trainer(){
-        return $this->belongsTo(Trainer::class);
+        return $this->hasOne(Trainer::class);
     }
 }
