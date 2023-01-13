@@ -22,15 +22,18 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-            Trainer::factory(10)->create();
-            Session::factory(100)->create();
+            // Trainer::factory(10)->create();
+            // Session::factory(100)->create();
 
             $this->call([
-                UserSeeder::class,
                 ZoomRoomsSeeder::class,
                 FundersSeeder::class,
                 CourseSeeder::class,
-                CohortSeeder::class
+                CohortSeeder::class,
+                RolesPermissionsSeeder::class,
+                UserSeeder::class,
+                TrainerSeeder::class,
+                SessionSeeder::class
             ]);
     }
 }
