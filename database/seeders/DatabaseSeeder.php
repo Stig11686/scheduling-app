@@ -30,8 +30,7 @@ class DatabaseSeeder extends Seeder
                 ZoomRoomsSeeder::class,
                 FundersSeeder::class,
                 CourseSeeder::class,
-                CohortSeeder::class,
-                RolesSeeder::class,
+                CohortSeeder::class
             ]);
     }
 }
