@@ -24,7 +24,7 @@ class Instance extends Model
     }
 
     function instanceSessions(){
-        return $this->hasMany(InstanceSession::class);
+        return $this->hasMany(InstanceSession::class)->orderBy('date');
     }
 
 }

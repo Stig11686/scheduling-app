@@ -26,8 +26,8 @@ class InstanceController extends Controller
 
     public function index()
     {
-       $instances = Instance::with(['course', 'instanceSessions.cohort', 'instanceSessions.session', 'instanceSessions.trainer', 'instanceSessions.zoomRoom'])->get();
-
+       $instances = Instance::with(['course', 'instanceSessions.cohort', 'instanceSessions.trainer', 'instanceSessions.zoomRoom', 'instanceSessions.session'])->get();
+        // dd($instances);
        $zoom_rooms = ZoomRoom::get();
        $trainers = Trainer::get();
 
