@@ -29,24 +29,26 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/schedule', [ScheduleController::class, 'index'])->middleware(['auth', 'verified'])->name('schedule');
-Route::resource('courses', CourseController::class, ['names' => [
-    'index' => 'courses'
-]]);
-Route::resource('cohorts', CohortController::class, ['names' => [
-    'index' => 'cohorts'
-]]);
-Route::resource('funders', FunderController::class, ['names' => [
-    'index' => 'funders'
-]]);
-Route::resource('sessions', SessionController::class, ['names' => [
-    'index' => 'sessions'
-]]);
-Route::resource('currentcourses', InstanceController::class, ['names' => [
-    'index' => 'currentcourses'
-]]);
+Route::group(['middleware' => ['auth', 'verified']], function(){
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::resource('courses', CourseController::class, ['names' => [
+        'index' => 'courses'
+    ]]);
+    Route::resource('cohorts', CohortController::class, ['names' => [
+        'index' => 'cohorts'
+    ]]);
+    Route::resource('funders', FunderController::class, ['names' => [
+        'index' => 'funders'
+    ]]);
+    Route::resource('sessions', SessionController::class, ['names' => [
+        'index' => 'sessions'
+    ]]);
+    Route::resource('currentcourses', InstanceController::class, ['names' => [
+        'index' => 'currentcourses'
+    ]]);
+});
+
 
 
 

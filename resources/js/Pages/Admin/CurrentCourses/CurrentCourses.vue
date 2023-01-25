@@ -31,10 +31,10 @@
                                                 <th>Zoom Link</th>
                                             </tr>
                                             <tr v-for="session in item.instance_sessions" :key="session.id">
-                                                <td>{{formatDate(session.date)}} {{  }}</td>
-                                                <td>{{ session.session.name }}</td>
-                                                <td>{{ session.trainer.name }}</td>
-                                                <td><Link :href="session.zoom_room.link">{{ session.zoom_room.link}}</Link> </td>
+                                                <td><p v-if="session.date">{{formatDate(session.date)}}</p></td>
+                                                <td><p v-if="session.session">{{ session.session.name }}</p></td>
+                                                <td><p v-if="session.trainer">{{ session.trainer.name }}</p></td>
+                                                <td><p v-if="session.zoom_room"><Link :href="session.zoom_room.link">{{ session.zoom_room.link}}</Link></p> </td>
                                             </tr>
                                         </table>
 
