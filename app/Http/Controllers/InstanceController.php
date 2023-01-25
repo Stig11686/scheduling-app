@@ -26,26 +26,12 @@ class InstanceController extends Controller
 
     public function index()
     {
-       $instances = Instance::with(['course', 'cohort', 'sessions'])->get();
+       $instances = Instance::with(['course', 'instanceSessions.cohort', 'instanceSessions.session', 'instanceSessions.trainer', 'instanceSessions.zoomRoom'])->get();
 
        $zoom_rooms = ZoomRoom::get();
        $trainers = Trainer::get();
-       $session_data = DB::table('instance_session')
-       ->selectRaw('courses.name as Course_Name,
-                sessions.name as Session_Title,
-               date as Date,
-               trainers.name as Lead_Trainer_Name,
-               zoom_rooms.link as Zoom_Link')
-       ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
-       ->join('courses', 'courses.id', '=', 'instances.course_id')
-       ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
-       ->join('trainers', 'trainers.id', '=', 'instance_session.trainer_id')
-       ->join('zoom_rooms', 'zoom_rooms.id', '=', 'instance_session.zoom_room_id')
-       ->get();
 
-       return Inertia::render('Admin/CurrentCourses/CurrentCourses', compact('instances', 'session_data', 'zoom_rooms', 'trainers'));
-
-        //return view('instances.index', compact('instances', 'session_data', 'zoom_rooms', 'trainers'));
+       return Inertia::render('Admin/CurrentCourses/CurrentCourses', compact('instances', 'zoom_rooms', 'trainers'));
     }
 
     /**

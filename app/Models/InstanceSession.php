@@ -10,23 +10,6 @@ class InstanceSession extends Pivot
 {
     use HasFactory;
 
-//     SELECT courses.name AS 'Course Name',
-// 		sessions.name AS 'Session Title',
-//         date AS 'Date',
-//         trainers.name AS 'Lead Trainer Name',
-//         zoom_rooms.link AS 'Zoom Link'
-// FROM `instance_session`
-// JOIN instances
-// ON instances.id = instance_session.instance_id
-// JOIN courses
-// ON courses.id = instances.course_id
-// JOIN sessions
-// ON sessions.id = instance_session.session_id
-// JOIN trainers
-// ON trainers.id = instance_session.trainer_id
-// JOIN zoom_rooms
-// ON zoom_rooms.id = instance_session.zoom_room_id
-
     protected $table = 'instance_session';
 
     protected $fillable = ['instance_id', 'session_id', 'date', 'trainer_id', 'zoom_room_id', 'cohort_id' ];
@@ -36,7 +19,7 @@ class InstanceSession extends Pivot
     }
 
     public function session(){
-        return $this->belongsToMany(Session::class);
+        return $this->hasOne(Session::class, 'id', 'session_id');
     }
 
     public function zoomRoom(){
@@ -44,6 +27,14 @@ class InstanceSession extends Pivot
     }
 
     public function trainer(){
-        return $this->hasOne(Trainer::class);
+        return $this->hasOne(Trainer::class, 'id', 'trainer_id');
+    }
+
+    public function cohort(){
+        return $this->hasOne(Cohort::class, 'id', 'cohort_id');
+    }
+
+    public function course(){
+        return $this->hasOneThrough(Instance::class);
     }
 }

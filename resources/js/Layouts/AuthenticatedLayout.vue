@@ -38,7 +38,7 @@ const showingNavigationDropdown = ref(false);
                                     Schedule
                                 </NavLink>
                                 </div>
-                                <div v-if="is('super-admin | tcg-admin ')" class="hidden space-x-8 sm:-my-px sm:flex">
+                                <div v-if="is('super-admin | tcg-admin')" class="hidden space-x-8 sm:-my-px sm:flex">
                                     <AdminNav />
                                 </div>
                             </div>

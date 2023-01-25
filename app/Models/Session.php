@@ -15,4 +15,7 @@ class Session extends Model
         return $this->belongsToMany(Instance::class);
     }
 
+    function trainers(){
+        return $this->hasManyThrough(Trainer::class, InstanceSession::class);
+    }
 }
