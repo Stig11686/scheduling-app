@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('trainers', function (Blueprint $table) {
-            $table->string('dbs_cert_path')->nullable()->after('dbs_renewal_date');
             $table->string('mandatory_training_cert_1')->nullable()->after('dbs_renewal_date');
             $table->string('mandatory_training_cert_2')->nullable()->after('dbs_renewal_date');
             $table->string('mandatory_training_cert_3')->nullable()->after('dbs_renewal_date');
             $table->string('mandatory_training_cert_4')->nullable()->after('dbs_renewal_date');
             $table->string('mandatory_training_cert_5')->nullable()->after('dbs_renewal_date');
             $table->boolean('has_completed_mandatory_training')->default(0)->after('dbs_renewal_date');
+            $table->string('dbs_cert_path')->nullable()->after('dbs_renewal_date');
         });
     }
 

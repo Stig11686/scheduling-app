@@ -27,7 +27,7 @@ class SessionController extends Controller
      */
     public function create()
     {
-        return view('sessions.create');
+        return Inertia::render('Admin/Sessions/Edit');
     }
 
     /**
@@ -56,8 +56,10 @@ class SessionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Session $session)
+
     {
-        //
+        $session = $session;
+        return Inertia::render('Admin/Sessions/Edit', compact('session'));
     }
 
     /**

@@ -33,7 +33,7 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <div v-if="is('tcg-trainer | tcg-learner ')" class="hidden space-x-8 sm:-my-px sm:flex">
+                                <div v-if="is('tcg-trainer | tcg-learner')" class="hidden space-x-8 sm:-my-px sm:flex">
                                 <NavLink :href="route('schedule')" :active="route().current('schedule')">
                                     Schedule
                                 </NavLink>

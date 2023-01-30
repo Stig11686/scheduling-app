@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cohorts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->integer('places')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->timestamps();
+        Schema::table('trainers', function (Blueprint $table) {
+            $table->dropColumn('name');
+            $table->dropColumn('email');
+            $table->dropColumn('phone');
+            $table->foreignId('user_id')->after('id')->constrained()->cascadeOnDelete();
+
+            $table->unique('user_id');
         });
     }
 
@@ -30,6 +30,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cohorts');
+        Schema::table('trainers', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -23,11 +23,10 @@ class DashboardController extends Controller
        if(in_array('tcg-trainer', $user_roles)){
         $next_session = $user->get_next_session();
         return Inertia::render('Dashboard', compact('next_session'));
-       } elseif(in_array('tcg-admin', $user_roles)){
+       } elseif(in_array('tcg-admin', $user_roles) || in_array('super-admin', $user_roles)){
         $weeks_sessions = $user->seven_days_sessions();
         return Inertia::render('Dashboard', compact('weeks_sessions'));
        }
 
-       return abort(403);
     }
 }

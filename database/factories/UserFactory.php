@@ -37,4 +37,18 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    private function randomEmailGenerator(){
+        $emailProviders = ['aol', 'yahoo', 'gmail', 'hotmail'];
+        $suffixes = ['.co.uk', '.com', '.org', '.io', 'ie', '.de', '.in', '.net'];
+
+        return $emailProviders[array_rand($emailProviders, 1)] . $suffixes[array_rand($suffixes, 1)];
+    }
+
+    private function slugify($string){
+        $string = strtolower($string);
+        $string = preg_replace('/[^a-z0-9 -]+/', '', $string);
+        $string = str_replace(' ', '-', $string);
+        return trim($string);
+    }
 }

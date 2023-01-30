@@ -16,28 +16,14 @@ class TrainerFactory extends Factory
      */
     public function definition()
     {
-        $name = fake()->name();
         $status = [0, 1];
 
         return [
-            'name' => $name,
-            'email' => $this->slugify($name) . '@' . $this->randomEmailGenerator(),
-            'phone' => fake()->phoneNumber(),
-            'status' => $status[array_rand($status, 1)]
+            'user_id' => fake()->unique()->numberBetween(1, 20),
+            'status' => $status[array_rand($status, 1)],
+            'has_dbs' => $status[array_rand($status, 1)]
         ];
     }
 
-    private function randomEmailGenerator(){
-        $emailProviders = ['aol', 'yahoo', 'gmail', 'hotmail'];
-        $suffixes = ['.co.uk', '.com', '.org', '.io', 'ie', '.de', '.in', '.net'];
 
-        return $emailProviders[array_rand($emailProviders, 1)] . $suffixes[array_rand($suffixes, 1)];
-    }
-
-    private function slugify($string){
-        $string = strtolower($string);
-        $string = preg_replace('/[^a-z0-9 -]+/', '', $string);
-        $string = str_replace(' ', '-', $string);
-        return trim($string);
-    }
 }

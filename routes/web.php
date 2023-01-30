@@ -29,6 +29,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+
 Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');

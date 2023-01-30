@@ -26,8 +26,16 @@ class InstanceSession extends Pivot
         return $this->belongsTo(ZoomRoom::class);
     }
 
+    // public function trainer(){
+    //     return $this->hasOne(Trainer::class, 'id', 'trainer_id');
+    // }
+
     public function trainer(){
-        return $this->hasOne(Trainer::class, 'id', 'trainer_id');
+        return $this->hasOneThrough(User::class, Trainer::class, 'id', 'id', 'trainer_id', 'user_id');
+    }
+
+    public function user(){
+        return $this->hasOneThrough(Trainer::class, User::class, 'user_id');
     }
 
     public function cohort(){

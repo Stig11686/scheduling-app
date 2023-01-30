@@ -46,6 +46,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function trainer(){
+        return $this->hasOne(Trainer::class);
+    }
+
     public function getSessions(){
         //trainer sessions
         //TODO - Implement learner functionality and return their sessions too!
@@ -91,7 +95,7 @@ class User extends Authenticatable
             sessions.name as sessionTitle,
             sessions.slides as sessionSlides,
             sessions.trainer_notes as trainerNotes,
-            trainers.name as trainer,
+            users.name as trainer,
             date as date,
             cohorts.name as cohortName,
             zoom_rooms.link as zoom')
@@ -100,6 +104,7 @@ class User extends Authenticatable
             ->join('cohorts', 'cohorts.id', '=', 'instances.cohort_id')
             ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
             ->join('trainers', 'trainers.id', '=', 'instance_session.trainer_id')
+            ->join('users', 'users.id', '=', 'trainers.user_id')
             ->join('zoom_rooms', 'zoom_rooms.id', '=', 'instance_session.zoom_room_id')
             ->whereBetween('date', [$today, $next_week])
             ->orderBy('date', 'asc')

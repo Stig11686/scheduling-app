@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('instance_id')->constrained();
             $table->foreignId('session_id')->constrained();
             $table->date('date')->nullable();
-            $table->foreignId('trainer_id')->nullable()->constrained();
-            $table->foreignId('zoom_room_id')->nullable()->constrained('zoom_rooms');
+            $table->foreignId('trainer_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
+            $table->foreignId('zoom_room_id')->nullable()->constrained('zoom_rooms')->nullOnDelete();
             $table->foreignId('cohort_id')->nullable()->constrained();
             $table->timestamps();
             $table->index(['instance_id', 'session_id']);

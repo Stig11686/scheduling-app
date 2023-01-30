@@ -29,7 +29,7 @@ class InstanceController extends Controller
        $instances = Instance::with(['course', 'cohort', 'instanceSessions.trainer', 'instanceSessions.zoomRoom', 'instanceSessions.session'])->get();
         // dd($instances);
        $zoom_rooms = ZoomRoom::get();
-       $trainers = Trainer::get();
+       $trainers = Trainer::with('user')->get();
 
        return Inertia::render('Admin/CurrentCourses/CurrentCourses', compact('instances', 'zoom_rooms', 'trainers'));
     }

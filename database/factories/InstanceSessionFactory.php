@@ -20,7 +20,7 @@ class InstanceSessionFactory extends Factory
             'instance_id' => fake()->numberBetween(1, 20),
             'session_id' => fake()->numberBetween(1, 100),
             'date' => fake()->dateTimeBetween('+1 week', '+6 months'),
-            'trainer_id' => fake()->numberBetween(1, 100),
+            'trainer_id' => fake()->numberBetween(1, 20),
             'zoom_room_id' => fake()->numberBetween(1,4),
             'cohort_id' => fake()->numberBetween(1, 20),
         ];

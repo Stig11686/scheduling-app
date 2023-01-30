@@ -14,4 +14,8 @@ class Trainer extends Model
     function session(){
         return $this->belongsTo(Session::class);
     }
+
+    function user(){
+        return $this->belongsTo(User::class);
+    }
 }
