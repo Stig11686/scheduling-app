@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div @click="toggleAccordion" id="accordionTitle" class="bg-white font-bold my-4 cursor-pointer py-3 pl-2">{{ title }} || {{  cohort  }}</div>
-        <div id="accordionContent" :class="state.isOpen ? 'block' : 'hidden'" class="pl-2">
+        <div @click="toggleAccordion" id="accordionTitle" class="w-full bg-white font-bold my-4 cursor-pointer py-3 pl-2">{{ title }} || {{  cohort  }}</div>
+        <div id="accordionContent" :class="state.isOpen ? 'block' : 'hidden'" class="pl-2 overflow-x-auto">
             <slot name="content"></slot>
         </div>
     </div>

@@ -21,10 +21,10 @@
             <AdminDataDisplay>
                 <template #data>
                     <ul v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200">
-                            <li class="my-">
+                            <li class="my-2 overflow-x-auto">
                                 <Accordion :title="item.course.name" :cohort="item.cohort.name">
                                     <template #content>
-                                        <table class="w-full">
+                                        <table class="w-full text-xs md:text-sm whitespace-nowrap">
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Session Title</th>
