@@ -5,6 +5,7 @@
     import Accordion from '@/Components/Accordion.vue';
     import formatDate from '@/helpers/formatDate.js';
     import { Link } from '@inertiajs/inertia-vue3';
+    import Pagination from '@/Components/Pagination.vue';
 </script>
 
 <template>
@@ -19,7 +20,7 @@
         <template #default>
             <AdminDataDisplay>
                 <template #data>
-                    <ul v-for="item in $page.props.instances" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200">
+                    <ul v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200">
                             <li class="my-">
                                 <Accordion :title="item.course.name" :cohort="item.cohort.name">
                                     <template #content>
@@ -42,6 +43,8 @@
                                 </Accordion>
                             </li>
                     </ul>
+
+                    <Pagination class="mt-6" :links="$page.props.instances.links" />
                 </template>
             </AdminDataDisplay>
         </template>
