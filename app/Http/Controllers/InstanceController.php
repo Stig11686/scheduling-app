@@ -27,7 +27,6 @@ class InstanceController extends Controller
     public function index()
     {
        $instances = Instance::with(['course', 'cohort', 'instanceSessions.trainer', 'instanceSessions.zoomRoom', 'instanceSessions.session'])->paginate(10);
-        // dd($instances);
        $zoom_rooms = ZoomRoom::get();
        $trainers = Trainer::with('user')->get();
 
@@ -78,9 +77,10 @@ class InstanceController extends Controller
      * @param  \App\Models\Instance  $instance
      * @return \Illuminate\Http\Response
      */
-    public function show(Instance $instance)
+    public function show(Request $request)
     {
-        return view('instances.edit', compact('instance'));
+        dd($request);
+        //return view('instances.edit', compact('instance'));
     }
 
     /**
@@ -122,75 +122,77 @@ class InstanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $instance_id = $request->input('instance_id');
-        //REFERS TO THE ADD SESSIONS PAGE
-       if(isset($_POST['session_id'])){
-            $sessions = $_POST['session_id'];
-            $session_data = DB::table('instance_session')
-            ->selectRaw('instance_session.session_id as session_id')
-            ->where('instance_id', $id)
-            ->get()->all();
+        //dd();
+    //     $instance_id = $request->input('instance_id');
+    //     //REFERS TO THE ADD SESSIONS PAGE
+    //    if(isset($_POST['session_id'])){
+    //         $sessions = $_POST['session_id'];
+    //         $session_data = DB::table('instance_session')
+    //         ->selectRaw('instance_session.session_id as session_id')
+    //         ->where('instance_id', $id)
+    //         ->get()->all();
 
-            $exisiting_session_ids = array_map(function($item){
-                return $item->session_id;
-              }, $session_data);
+    //         $exisiting_session_ids = array_map(function($item){
+    //             return $item->session_id;
+    //           }, $session_data);
 
-            $session_ids = array_map(function($item){
-                return intval($item);
-            }, $sessions);
+    //         $session_ids = array_map(function($item){
+    //             return intval($item);
+    //         }, $sessions);
 
-            $removed_sessions = array_diff($exisiting_session_ids, $session_ids);
+    //         $removed_sessions = array_diff($exisiting_session_ids, $session_ids);
 
-            if($removed_sessions){
-                foreach($removed_sessions as $session){
-                    //remove session from instance_session table by session id and instance_id
-                    $sqlDelete = "delete from instance_session where session_id=$session and instance_id = $instance_id";
-                    DB::select($sqlDelete);
-                }
-            }
+    //         if($removed_sessions){
+    //             foreach($removed_sessions as $session){
+    //                 //remove session from instance_session table by session id and instance_id
+    //                 $sqlDelete = "delete from instance_session where session_id=$session and instance_id = $instance_id";
+    //                 DB::select($sqlDelete);
+    //             }
+    //         }
 
-            foreach($session_data as $key => $existing_session){
-                foreach($sessions as $key => $session){
-                    //remove checkbox that's already checked - validation for the creating the instance sessions
-                    if(intval($session) === intval($existing_session->session_id)){
-                        unset($sessions[$key]);
-                        $sessions = array_values($sessions);
-                    }
-                }
-            }
+    //         foreach($session_data as $key => $existing_session){
+    //             foreach($sessions as $key => $session){
+    //                 //remove checkbox that's already checked - validation for the creating the instance sessions
+    //                 if(intval($session) === intval($existing_session->session_id)){
+    //                     unset($sessions[$key]);
+    //                     $sessions = array_values($sessions);
+    //                 }
+    //             }
+    //         }
 
-            //create new sessions on the course instance
-            foreach($sessions as $session){
-                $event = new Event();
-               $instance_id = $request->input('instance_id');
-                InstanceSession::create([
-                    'instance_id' => $instance_id,
-                    'session_id' => $session,
-                    'cohort_id' => $request->input('cohort_id')
-                ]);
+    //         //create new sessions on the course instance
+    //         foreach($sessions as $session){
+    //             $event = new Event();
+    //            $instance_id = $request->input('instance_id');
+    //             InstanceSession::create([
+    //                 'instance_id' => $instance_id,
+    //                 'session_id' => $session,
+    //                 'cohort_id' => $request->input('cohort_id')
+    //             ]);
 
-                $event->name = 'Session' . $session;
-                $event->startDateTime = Carbon::now()->addHour();
-                $event->endDateTime = Carbon::now()->addHour();
+    //             $event->name = 'Session' . $session;
+    //             $event->startDateTime = Carbon::now()->addHour();
+    //             $event->endDateTime = Carbon::now()->addHour();
 
-                $event->save();
+    //             $event->save();
 
-            };
+    //         };
 
-            //TODO - CREATE GOOGLE CALENDAR INVITE
-        } else {
-            //REFERS TO THE INDEX PAGE TO EDIT INDIVIDUAL SESSIONS
-            $session_id = $request->input('instance_session_id');
+    //         //TODO - CREATE GOOGLE CALENDAR INVITE
+    //     } else {
+    //         //REFERS TO THE INDEX PAGE TO EDIT INDIVIDUAL SESSIONS
+            $session_id = $request->input('sessionId');
+
             $instance_session = InstanceSession::where('instance_id', $id)->where('session_id', $session_id)->first();
 
             $instance_session->date = $request->input('date');
-            $instance_session->trainer_id = $request->input('trainer_id');
-            $instance_session->zoom_room_id = $request->input('zoom_room_id');
+            $instance_session->trainer_id = $request->input('trainerId');
+            $instance_session->zoom_room_id = $request->input('roomId');
 
             $instance_session->save();
-            //TO DO - UPDATE GOOGLE CALENDAR INVITE
-       }
-       return redirect()->route('instances');
+    //         //TO DO - UPDATE GOOGLE CALENDAR INVITE
+    //    }
+            return redirect()->route('currentcourses');
     }
 
        /**

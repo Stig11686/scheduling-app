@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.table
+{
+	display:table;
+	border-collapse:collapse;
+	border-spacing:2px;
+    width: 100%;
+}
+.thead
+{
+	display:table-header-group;
+	color:white;
+	font-weight:bold;
+	background-color:grey;
+    width: 100%;
+}
+.tbody
+{
+	display:table-row-group;
+}
+.tr
+{
+	display:table-row;
+}
+.td
+{
+	display:table-cell;
+	border:1px solid black;
+	padding:1px;
+}
+
+
