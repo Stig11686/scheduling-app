@@ -125,8 +125,33 @@ const showingNavigationDropdown = ref(false);
                             Dashboard
                         </ResponsiveNavLink>
                         <div v-if="is('tcg-trainer | tcg-learner')">
-                            <ResponsiveNavLink :href="route('schedule')" :active="route().current('schedule')">
+                        <ResponsiveNavLink :href="route('schedule')" :active="route().current('schedule')">
                             My Schedule
+                        </ResponsiveNavLink>
+                        </div>
+                        <div v-if="is('super-admin | tcg-admin')">
+                        <ResponsiveNavLink :href="route('currentcourses')" :active="route().current('schedule')">
+                            Current Courses
+                        </ResponsiveNavLink>
+                        </div>
+                        <div v-if="is('super-admin | tcg-admin')">
+                        <ResponsiveNavLink :href="route('courses')" :active="route().current('schedule')">
+                            Courses
+                        </ResponsiveNavLink>
+                        </div>
+                        <div v-if="is('super-admin | tcg-admin')">
+                        <ResponsiveNavLink :href="route('cohorts')" :active="route().current('schedule')">
+                            Cohorts
+                        </ResponsiveNavLink>
+                        </div>
+                        <div v-if="is('super-admin | tcg-admin')">
+                        <ResponsiveNavLink :href="route('sessions')" :active="route().current('schedule')">
+                            Sessions
+                        </ResponsiveNavLink>
+                        </div>
+                        <div v-if="is('super-admin | tcg-admin')">
+                        <ResponsiveNavLink :href="route('funders')" :active="route().current('schedule')">
+                            Funders
                         </ResponsiveNavLink>
                         </div>
                     </div>
