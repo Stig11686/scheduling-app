@@ -13,11 +13,11 @@
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
+        <script type="text/javascript">
+            window.vueSpatiePermissions = {!! auth()->check() ? auth()->user()->getRolesPermissionsAsJson() : 0 !!}
+        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia
     </body>
-    <script type="text/javascript">
-        window.vueSpatiePermissions = {!! auth()->check() ? auth()->user()->getRolesPermissionsAsJson() : 0 !!}
-    </script>
 </html>
