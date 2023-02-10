@@ -89,28 +89,30 @@ class InstanceController extends Controller
      * @param  \App\Models\Instance  $instance
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request)
     {
-        $instance = Instance::with(['course', 'cohort'])->where('id', $id)->get();
-        $trainers = Trainer::all();
-        $zoom_rooms = ZoomRoom::all();
-        $session_data = DB::table('instance_session')
-       ->selectRaw('courses.name as Course_Name,
-                sessions.name as Session_Title,
-               date as Date,
-               instance_session.id as id,
-               instance_session.instance_id as instance_id,
-               instance_session.session_id as session_id
-            ')
-       ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
-       ->join('courses', 'courses.id', '=', 'instances.course_id')
-       ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
-       ->where('instance_id', $id)
-       ->get();
+    //     $instance = Instance::with(['course', 'cohort'])->where('id', $id)->get();
+    //     $trainers = Trainer::all();
+    //     $zoom_rooms = ZoomRoom::all();
+    //     $session_data = DB::table('instance_session')
+    //    ->selectRaw('courses.name as Course_Name,
+    //             sessions.name as Session_Title,
+    //            date as Date,
+    //            instance_session.id as id,
+    //            instance_session.instance_id as instance_id,
+    //            instance_session.session_id as session_id
+    //         ')
+    //    ->join('instances', 'instances.id', '=', 'instance_session.instance_id')
+    //    ->join('courses', 'courses.id', '=', 'instances.course_id')
+    //    ->join('sessions', 'sessions.id', '=', 'instance_session.session_id')
+    //    ->where('instance_id', $id)
+    //    ->get();
 
-        $sessions = Session::all();
+    //     $sessions = Session::all();
 
-        return view('instances.edit', compact('instance', 'sessions', 'session_data', 'trainers', 'zoom_rooms'));
+    //     return view('instances.edit', compact('instance', 'sessions', 'session_data', 'trainers', 'zoom_rooms'));
+
+        return Inertia::render('Admin/CurrentCourses/SessionEdit');
     }
 
     /**

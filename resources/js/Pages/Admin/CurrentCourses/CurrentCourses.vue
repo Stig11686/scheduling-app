@@ -22,11 +22,11 @@
         <template #default>
             <AdminDataDisplay>
                 <template #data>
-                    <ul v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200">
-                            <li class="my-2 overflow-x-auto">
+                    <ul>
+                            <li v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200 overflow-x-auto">
                                 <Accordion :title="item.course.name" :cohort="item.cohort.name">
                                     <template #content>
-                                        <div class="table">
+                                        <div class="table overflow-x-scroll">
                                             <div class="thead">
                                                 <div class="tr">
                                                     <div class="td">Date</div>
@@ -38,6 +38,7 @@
                                             <div class="tbody">
                                                 <EditForm v-for="session in item.instance_sessions" :key="session.id"
                                                     :instanceId=session.instance_id
+                                                    :instanceSessionId="session.id"
                                                     :sessionId=session.session_id
                                                     :date="session.date"
                                                     :sessionName="session.session.name"
@@ -49,14 +50,6 @@
                                                     :roomId="session.zoom_room_id"
                                                 />
                                             </div>
-
-
-                                            <!-- <tr v-for="session in item.instance_sessions" :key="session.id">
-                                                <td><p v-if="session.date">{{formatDate(session.date)}}</p></td>
-                                                <td><p v-if="session.session">{{ session.session.name }}</p></td>
-                                                <td><p v-if="session.trainer">{{ session.trainer.name }}</p></td>
-                                                <td><p v-if="session.zoom_room"><Link :href="session.zoom_room.link">{{ session.zoom_room.link}}</Link></p> </td>
-                                            </tr> -->
                                         </div>
 
                                     </template>

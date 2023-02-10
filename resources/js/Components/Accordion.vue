@@ -18,6 +18,3 @@ import { reactive } from 'vue'
     const toggleAccordion = () => state.isOpen = !state.isOpen;
 
 </script>
-<style lang="">
-
-</style>

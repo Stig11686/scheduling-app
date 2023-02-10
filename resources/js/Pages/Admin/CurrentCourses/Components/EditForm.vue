@@ -14,6 +14,10 @@
             type: Number,
             default: null
         },
+        'instanceSessionId': {
+            type: Number,
+            default: null
+        },
         'sessionId': {
             type: Number,
             default: null
@@ -82,7 +86,6 @@
                 <input
                     :type="state.editMode ? 'date' : 'text'"
                     :disabled="state.editMode == false"
-                    v-model="form.date"
                     name="date"
                     id="date"
                     class="h-full w-full border-none bg-transparent pl-0"
@@ -183,10 +186,7 @@
             </div>
 
             <div class="td">
-                <button @click.prevent="toggleEdit" v-if="can('instance_edit')" :class="{ hidden: state.editMode}" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Edit</button>
-                <button v-if="can('instance_edit')" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 z-10" :class="{ hidden: state.editMode == false}" type="submit" id="submit">
-                    Submit
-                </button>
+                <Link :href="(route('edit-session.edit', instanceSessionId))" v-if="can('instance_edit')" :class="{ hidden: state.editMode}" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Edit</Link>
             </div>
         </form>
 

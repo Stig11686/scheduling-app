@@ -8,6 +8,7 @@ use App\Http\Controllers\CohortController;
 use App\Http\Controllers\FunderController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\InstanceController;
+use App\Http\Controllers\InstanceSessionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,6 +49,9 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     ]]);
     Route::resource('currentcourses', InstanceController::class, ['names' => [
         'index' => 'currentcourses'
+    ]]);
+    Route::resource('edit-session', InstanceSessionController::class, ['names' => [
+        'index' => 'edit-session'
     ]]);
 });
 

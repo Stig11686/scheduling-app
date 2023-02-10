@@ -10,8 +10,8 @@ const props = defineProps({
 <template #default>
     <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle">
-            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-            <table class="min-w-full divide-y divide-gray-300">
+            <div class="overflow-x-scroll shadow-sm ring-1 ring-black ring-opacity-5">
+            <table class="min-w-full divide-y divide-gray-300 overflow-x-scroll">
                 <thead class="bg-gray-50">
                 <tr>
                     <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Date</th>
