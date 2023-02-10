@@ -18,7 +18,7 @@ import ComingSoon from '@/Components/DashboardComponents/ComingSoon.vue';
 
                 <div class="py-12">
                     <div class="flex flex-wrap">
-                        <div v-if="$page.props.next_session">
+                        <div class="overflow-x-scroll h-100" v-if="$page.props.next_session">
                             <DashboardTileVue
                             title="Your Next Session"
                             type="Course"
@@ -30,7 +30,7 @@ import ComingSoon from '@/Components/DashboardComponents/ComingSoon.vue';
                             </DashboardTileVue>
                         </div>
 
-                        <div v-if="$page.props.weeks_sessions">
+                        <div class="overflow-x-scroll h-100" v-if="$page.props.weeks_sessions">
                             <DashboardTileVue
                             title="This Weeks Sessions"
                             type="Course"

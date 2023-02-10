@@ -20,7 +20,7 @@ const props = defineProps({
 
 </script>
 
-<template>
+<template class="overflow-x-scroll h-100">
     <div class="px-4 sm:px-6 lg:px-8 mt-6 md:mt-0 bg-white mx-auto pt-6 my-8">
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
