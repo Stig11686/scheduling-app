@@ -2,6 +2,13 @@
     import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import AdminPageHeader from '@/Components/Admin/AdminPageHeader.vue';
     import AdminDataDisplay from '@/Components/Admin/AdminDataDisplay.vue';
+    import { Link, useForm } from '@inertiajs/inertia-vue3';
+
+    const form = useForm();
+
+    const deleteCourse = (item) => {
+        form.delete(route('courses.destroy', item));
+    }
 </script>
 
 <template>
@@ -23,9 +30,9 @@
                                     <p class="text-sm font-medium text-indigo-600 truncate">{{item.name}}</p>
                                     <div class="ml-2 flex-shrink-0 flex">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"><a href="">Edit Course</a></span>
-                                        <form method="POST" action="">
-                                            <button type="submit" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Delete Course</button>
-                                        </form>
+                                        <button @click.prevent="deleteCourse(item)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Delete Course
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="mt-2 sm:flex sm:justify-between">

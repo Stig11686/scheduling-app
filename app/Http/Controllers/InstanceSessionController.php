@@ -101,6 +101,10 @@ class InstanceSessionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $session = InstanceSession::find($id);
+
+        $session->delete();
+
+        return redirect()->route('currentcourses');
     }
 }

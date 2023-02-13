@@ -24,7 +24,7 @@
                 <template #data>
                     <ul>
                             <li v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200 overflow-x-auto">
-                                <Accordion :title="item.course.name" :cohort="item.cohort.name">
+                                <Accordion :instanceId="item.id" :title="item.course.name" :cohort="item.cohort.name">
                                     <template #content>
                                         <div class="table overflow-x-scroll">
                                             <div class="thead">

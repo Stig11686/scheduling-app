@@ -75,6 +75,10 @@
 
         });
     }
+
+    const deleteSession = () => {
+        form.delete(route('edit-session.destroy', props.instanceSessionId));
+    }
 </script>
 
 <template>
@@ -187,6 +191,7 @@
 
             <div class="td">
                 <Link :href="(route('edit-session.edit', instanceSessionId))" v-if="can('instance_edit')" :class="{ hidden: state.editMode}" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Edit</Link>
+                <button class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" @click.prevent="deleteSession">Delete</button>
             </div>
         </form>
 

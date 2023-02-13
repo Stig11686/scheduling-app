@@ -89,8 +89,9 @@ class InstanceController extends Controller
      * @param  \App\Models\Instance  $instance
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id)
     {
+
     //     $instance = Instance::with(['course', 'cohort'])->where('id', $id)->get();
     //     $trainers = Trainer::all();
     //     $zoom_rooms = ZoomRoom::all();
@@ -111,8 +112,9 @@ class InstanceController extends Controller
     //     $sessions = Session::all();
 
     //     return view('instances.edit', compact('instance', 'sessions', 'session_data', 'trainers', 'zoom_rooms'));
-
-        return Inertia::render('Admin/CurrentCourses/SessionEdit');
+        $instance = Instance::with('instanceSessions')->where('id', $id)->get();
+        $sessions = Session::all();
+        return Inertia::render('Admin/CurrentCourses/InstanceEdit', compact('instance', 'sessions'));
     }
 
     /**

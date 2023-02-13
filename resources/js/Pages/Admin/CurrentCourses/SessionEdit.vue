@@ -63,6 +63,7 @@ const submit = () => {
                                         v-model="form.sessionId"
                                     >
                                         <option selected disabled value="">{{ props.session[0].session.name }}</option>
+                                        <option value="">No Session</option>
                                             <option v-for="session in $page.props.sessions" :key="session.id" :value="session.id">
                                             {{ session.name }}
                                             </option>
@@ -79,6 +80,7 @@ const submit = () => {
                                             v-model="form.trainerId"
                                         >
                                             <option selected disabled value="">{{ props.session[0].trainer.name }}</option>
+                                            <option value="">No Trainer</option>
                                                 <option v-for="trainer in $page.props.trainers" :key="trainer.id" :value="trainer.id">
                                                 {{ trainer.user.name }}
                                                 </option>
@@ -94,6 +96,7 @@ const submit = () => {
                                         v-model="form.zoomRoomId"
                                     >
                                         <option selected disabled value="">{{ props.session[0].zoom_room.name }}</option>
+                                        <option value="">No Room</option>
                                             <option v-for="room in $page.props.zoom_rooms" :key="room.id" :value="room.id">
                                                 {{ room.name }}
                                             </option>

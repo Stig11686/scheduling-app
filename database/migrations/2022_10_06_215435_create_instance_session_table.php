@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('instance_session', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instance_id')->constrained();
-            $table->foreignId('session_id')->constrained();
+            $table->foreignId('instance_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('session_id')->nullable()->constrained();
             $table->date('date')->nullable();
             $table->foreignId('trainer_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->foreignId('zoom_room_id')->nullable()->constrained('zoom_rooms')->nullOnDelete();
-            $table->foreignId('cohort_id')->nullable()->constrained();
+            $table->foreignId('cohort_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
             $table->index(['instance_id', 'session_id']);
         });

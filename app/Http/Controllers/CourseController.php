@@ -102,6 +102,6 @@ class CourseController extends Controller
     {
         $course->delete();
 
-        return redirect()->route('courses');
+        return Inertia::render('Admin/Courses/Courses');
     }
 }

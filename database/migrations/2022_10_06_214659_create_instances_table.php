@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('instances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_id')->constrained();
-            $table->foreignId('cohort_id')->constrained()->nullable();
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('cohort_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
             $table->unique(['course_id', 'cohort_id']);
         });
