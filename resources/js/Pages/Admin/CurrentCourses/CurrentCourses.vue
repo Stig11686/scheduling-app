@@ -14,7 +14,7 @@
     <AuthenticatedLayout>
         <template #header>
             <AdminPageHeader
-                title="Courses"
+                title="Courses Currently Running"
                 href="currentcourses.create"
             />
         </template>
@@ -46,7 +46,7 @@
                                                     :trainer="session.trainer"
                                                     :trainerId="session.trainer_id"
                                                     :zoomRooms="$page.props.zoom_rooms"
-                                                    :zoomRoom="session.zoom_room.link"
+                                                    :zoomRoom="session.zoom_room"
                                                     :roomId="session.zoom_room_id"
                                                 />
                                             </div>

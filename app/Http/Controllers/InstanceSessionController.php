@@ -79,8 +79,6 @@ class InstanceSessionController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-
         $session = InstanceSession::find($id);
         $session->update([
             'date' => $request->input('date'),

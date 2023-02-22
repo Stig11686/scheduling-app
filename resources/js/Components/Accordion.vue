@@ -4,11 +4,9 @@
             <div>
                 {{ title }} || {{  cohort  }}
             </div>
-            <div @click="state.isOpen = false" class="mr-2">
-                <Link :href="route('currentcourses.edit', instanceId)" class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 z-10">Add Sessions</Link>
-            </div>
         </div>
         <div id="accordionContent" :class="state.isOpen ? 'block' : 'hidden'" class="pl-2 overflow-x-auto">
+            <Link :href="route('currentcourses.edit', instanceId)" class="mb-6 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 z-10">Manage Sessions</Link>
             <slot name="content"></slot>
         </div>
     </div>

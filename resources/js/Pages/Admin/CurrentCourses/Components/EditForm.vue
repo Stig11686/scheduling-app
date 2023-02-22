@@ -47,7 +47,7 @@
             default: null
         },
         'zoomRoom': {
-            type: String,
+            type: Object,
             default: null
         },
         'roomId': {
@@ -70,14 +70,15 @@
     const submit = () => {
         state.editMode = false;
         form.put(route('currentcourses.update', props.instanceId), {
-            //onSuccess : () => form.reset(),
             resetOnSuccess: false,
-
+            preserveScroll: true
         });
     }
 
     const deleteSession = () => {
-        form.delete(route('edit-session.destroy', props.instanceSessionId));
+        form.delete(route('edit-session.destroy', props.instanceSessionId), {
+            preserveScroll: true
+        });
     }
 </script>
 
@@ -92,8 +93,9 @@
                     :disabled="state.editMode == false"
                     name="date"
                     id="date"
-                    class="h-full w-full border-none bg-transparent pl-0"
-                    :value="state.editMode ? form.date : formatDate(form.date)"
+                    class="h-full w-full border-none pl-0"
+                    :class="form.date ? 'bg-transparent' : 'bg-red-500 text-red-900'"
+                    :value="form.date ? formatDate(form.date) : ''"
                 />
             </div>
 
@@ -155,7 +157,7 @@
                         id="zoom_id"
                         disabled
                         class="h-full border-none w-full bg-transparent pl-0"
-                        :value="form.zoomRoom ? form.zoomRoom : 'Press Edit to Add a Zoom Room'"
+                        :value="form.zoomRoom ? form.zoomRoom.link : 'Press Edit to Add a Zoom Room'"
                     />
 
                     <select

@@ -15,7 +15,7 @@ class CohortController extends Controller
      */
     public function index()
     {
-        $cohorts = Cohort::all();
+        $cohorts = Cohort::paginate(10);
 
         return Inertia::render('Admin/Cohorts/Cohorts', compact('cohorts'));
     }
@@ -27,7 +27,7 @@ class CohortController extends Controller
      */
     public function create()
     {
-        return view('cohorts.create');
+        return Inertia::render('Admin/Cohorts/CohortCreate');
     }
 
     /**
@@ -72,7 +72,7 @@ class CohortController extends Controller
      */
     public function edit(Cohort $cohort)
     {
-        return view('cohorts.edit', compact('cohort'));
+        return Inertia::render('Admin/Cohorts/CohortEdit', compact('cohort'));
     }
 
     /**
@@ -92,9 +92,11 @@ class CohortController extends Controller
         $cohort->update([
             'name' => $request->name,
            'places' => $request->places,
-           'start_date' => $request->start_date,
-           'end_date' => $request->end_date
+           'start_date' => $request->startDate,
+           'end_date' => $request->endDate
         ]);
+
+
 
         return redirect()->route('cohorts');
     }
@@ -109,6 +111,6 @@ class CohortController extends Controller
     {
         $cohort->delete();
 
-        return redirect()->route('cohorts.index');
+        return redirect()->route('cohorts');
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('instance_session', function (Blueprint $table) {
             $table->id();
             $table->foreignId('instance_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('session_id')->nullable()->constrained();
+            $table->foreignId('session_id')->nullable()->constrained()->nullOnDelete();
             $table->date('date')->nullable();
             $table->foreignId('trainer_id')->nullable()->constrained()->onUpdate('cascade')->nullOnDelete();
             $table->foreignId('zoom_room_id')->nullable()->constrained('zoom_rooms')->nullOnDelete();

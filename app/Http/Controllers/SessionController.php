@@ -15,7 +15,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        $sessions = Session::all();
+        $sessions = Session::paginate(20);
 
         return Inertia::render('Admin/Sessions/Sessions', compact('sessions'));
     }
@@ -38,6 +38,12 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'review_date' => 'required',
+            'review_status' => 'required'
+        ]);
+
         Session::create([
             'name' => $request->input('name'),
             'review_due' => $request->input('review_due'),
@@ -46,7 +52,7 @@ class SessionController extends Controller
             'slides' => $request->input('slides')
         ]);
 
-        return redirect()->route('sessions.index');
+        return redirect()->route('sessions');
     }
 
     /**
@@ -82,6 +88,12 @@ class SessionController extends Controller
      */
     public function update(Request $request, Session $session)
     {
+        $request->validate([
+            'name' => 'required',
+            'review_status' => 'required',
+            'review_date' => 'required'
+        ]);
+
         $session->update([
             'name' => $request->name,
             'review_status' => $request->review_status,
@@ -90,7 +102,7 @@ class SessionController extends Controller
             'trainer_notes' => $request->trainer_notes
         ]);
 
-        return redirect()->route('sessions.index');
+        return redirect()->route('sessions');
     }
 
     /**
@@ -103,6 +115,6 @@ class SessionController extends Controller
     {
         $session->delete();
 
-        return redirect()->route('sessions.index');
+        return redirect()->route('sessions');
     }
 }

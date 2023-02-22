@@ -27,7 +27,7 @@ class FunderController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Funders/FunderCreate');
     }
 
     /**
@@ -38,7 +38,17 @@ class FunderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required'
+        ]);
+
+        Funder::create([
+            'name' =>$request->input('name'),
+            'code' => $request->input('code')
+        ]);
+
+        return redirect()->route('funders');
     }
 
     /**
@@ -60,7 +70,7 @@ class FunderController extends Controller
      */
     public function edit(Funder $funder)
     {
-        return view('funder.edit', compact('funder'));
+        return Inertia::render('Admin/Funders/FunderEdit', compact('funder'));
     }
 
     /**
@@ -72,12 +82,17 @@ class FunderController extends Controller
      */
     public function update(Request $request, Funder $funder)
     {
+        $request->validate([
+            'name' => 'required',
+            'code' => 'required'
+        ]);
+
         $funder->update([
             'name' => $request->name,
             'code' => $request->code
         ]);
 
-        return redirect()->route('funders.index');
+        return redirect()->route('funders');
     }
 
     /**
@@ -90,6 +105,6 @@ class FunderController extends Controller
     {
         $funder->delete();
 
-        return redirect()->route('funders.index');
+        return redirect()->route('funders');
     }
 }

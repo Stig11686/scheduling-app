@@ -15,10 +15,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-       $courses = Course::all();
+       $courses = Course::paginate(10);
 
        return Inertia::render('Admin/Courses/Courses', compact('courses'));
-       //return view('courses.index', compact('courses'));
     }
 
     /**
@@ -28,7 +27,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('courses.create');
+        return Inertia::render('Admin/Courses/CourseCreate');
     }
 
     /**
@@ -69,7 +68,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-       return view('courses.edit', compact('course'));
+       return Inertia::render('Admin/Courses/CourseEdit', compact('course'));
     }
 
     /**
@@ -89,7 +88,7 @@ class CourseController extends Controller
             'name'=> $request->name
         ]);
 
-        return redirect()->route('courses.index');
+        return redirect()->route('courses');
     }
 
     /**
@@ -102,6 +101,6 @@ class CourseController extends Controller
     {
         $course->delete();
 
-        return Inertia::render('Admin/Courses/Courses');
+        return redirect()->route('courses');
     }
 }

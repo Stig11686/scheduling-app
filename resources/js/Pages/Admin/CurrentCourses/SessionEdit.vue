@@ -10,10 +10,10 @@ const props = defineProps({
 })
 
 const form = useForm({
-    date: props.session[0].date,
+    date: props.session[0].date ?? '',
     sessionId: props.session[0].session.id,
     trainerId: props.session[0].trainer_id,
-    zoomRoomId: props.session[0].zoom_room.id,
+    zoomRoomId: props.session[0].zoom_room,
     trainer: props.session[0].trainer
 })
 
@@ -79,7 +79,7 @@ const submit = () => {
                                             class="w-full h-full border-none bg-transparent pl-0"
                                             v-model="form.trainerId"
                                         >
-                                            <option selected disabled value="">{{ props.session[0].trainer.name }}</option>
+                                            <option v-if="props.session[0].trainer" selected disabled value="">{{ props.session[0].trainer.name }}</option>
                                             <option value="">No Trainer</option>
                                                 <option v-for="trainer in $page.props.trainers" :key="trainer.id" :value="trainer.id">
                                                 {{ trainer.user.name }}
@@ -95,7 +95,7 @@ const submit = () => {
                                         class="w-full h-full border-none bg-transparent pl-0"
                                         v-model="form.zoomRoomId"
                                     >
-                                        <option selected disabled value="">{{ props.session[0].zoom_room.name }}</option>
+                                        <option v-if="props.session[0].zoom_room" selected disabled value="">{{ props.session[0].zoom_room.name }}</option>
                                         <option value="">No Room</option>
                                             <option v-for="room in $page.props.zoom_rooms" :key="room.id" :value="room.id">
                                                 {{ room.name }}
