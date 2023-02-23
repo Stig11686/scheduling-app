@@ -8,6 +8,11 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import AdminNav from '@/Components/Admin/AdminNav.vue';
 
+const isSuperAdmin = (user) => {
+    const userRoles = user.roles.map(x => x.name);
+    return userRoles.includes('super-admin');
+}
+
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -38,7 +43,7 @@ const showingNavigationDropdown = ref(false);
                                     Schedule
                                 </NavLink>
                                 </div>
-                                <div v-show="is('super-admin')"  class="hidden space-x-8 sm:-my-px sm:flex">
+                                <div v-if="isSuperAdmin($page.props.auth.user)"  class="hidden space-x-8 sm:-my-px sm:flex">
                                     <AdminNav />
                                 </div>
                             </div>

@@ -9,6 +9,7 @@ use App\Http\Controllers\FunderController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\InstanceController;
 use App\Http\Controllers\InstanceSessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,6 +53,9 @@ Route::group(['middleware' => ['auth', 'verified']], function(){
     ]]);
     Route::resource('edit-session', InstanceSessionController::class, ['names' => [
         'index' => 'edit-session'
+    ]]);
+    Route::resource('users', UserController::class, ['names' => [
+        'index' => 'users'
     ]]);
 });
 

@@ -27,8 +27,8 @@
             default: null,
         },
         'sessionName': {
-            type: String,
-            default: ''
+            type: Object,
+            default: null
         },
         'trainers': {
             type: Array,
@@ -80,6 +80,7 @@
             preserveScroll: true
         });
     }
+
 </script>
 
 <template>
@@ -105,7 +106,7 @@
                     id="session_name"
                     name="session_name"
                     disabled
-                    :value="form.sessionName" class="h-full border-none w-full bg-transparent pl-0"
+                    :value="form.sessionName ? form.sessionName.name : '' " class="h-full border-none w-full bg-transparent pl-0"
                 />
             </div>
 

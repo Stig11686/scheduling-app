@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Inertia\Inertia;
 use Spatie\Permission\Traits\HasRoles;
 
 class UserController extends Authenticatable
@@ -18,9 +19,9 @@ class UserController extends Authenticatable
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('roles')->get();
 
-        return view('users.index', compact('users'));
+        return Inertia::render('Admin/Users/Users', compact('users'));
     }
 
     /**

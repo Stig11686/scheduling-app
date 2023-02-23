@@ -110,4 +110,5 @@ class User extends Authenticatable
             ->orderBy('date', 'asc')
             ->get();
     }
+
 }

@@ -41,7 +41,7 @@
                                                     :instanceSessionId="session.id"
                                                     :sessionId=session.session_id
                                                     :date="session.date"
-                                                    :sessionName="session.session.name"
+                                                    :sessionName="session.session"
                                                     :trainers="$page.props.trainers"
                                                     :trainer="session.trainer"
                                                     :trainerId="session.trainer_id"
