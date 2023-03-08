@@ -46,6 +46,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public $primaryKey = 'id';
+
     public function trainer(){
         return $this->hasOne(Trainer::class);
     }

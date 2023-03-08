@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Inertia\Inertia;
-use Spatie\Permission\Traits\HasRoles;
 
-class UserController extends Authenticatable
+class UserController extends Controller
 {
 
-    use HasRoles;
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +18,7 @@ class UserController extends Authenticatable
      */
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles')->where('id', '<>', auth()->user()->id)->paginate(50);
 
         return Inertia::render('Admin/Users/Users', compact('users'));
     }
@@ -42,7 +41,11 @@ class UserController extends Authenticatable
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
     }
 
     /**
@@ -64,31 +67,26 @@ class UserController extends Authenticatable
      */
     public function edit($id)
     {
-        //
+        $user  = User::where('id', $id)->with('roles')->get();
+        $allRoles = Role::all();
+
+        return Inertia::render('Admin/Users/UserEdit', compact('user', 'allRoles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function update(Request $request, $id)
-    // {
-    //     //
-    // }
+    public function update(Request $request){
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function destroy(User $user)
-    // {
-    //     $user->delete();
+        dd($request);
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+    }
 
-    //     return redirect()->route('users.index');
-    // }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('users');
+    }
 }

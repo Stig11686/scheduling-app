@@ -4,9 +4,14 @@ import { Link, useForm } from '@inertiajs/inertia-vue3';
 import formatDate from '@/helpers/formatDate';
 
 const props = defineProps({
-    session: Object,
-    default: () => ({
-    })
+    session: {
+        type: Object,
+        default: null
+    },
+    errors: {
+        type: Object,
+        default: null
+    }
 })
 
 const form = useForm({
@@ -22,6 +27,7 @@ const submit = () => {
 
 }
 
+
 </script>
 
 <template>
@@ -34,13 +40,9 @@ const submit = () => {
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
-                            <!-- @if($errors->any())
-                                <div class="bg-red-500 text-white py-4 px-2">
-                                    @foreach($errors->all() as $error)
-                                        <p>{{ $error }}</p>
-                                    @endforeach
-                                </div>
-                            @endif -->
+                            <div v-show="Object.keys(props.errors).length > 0" class="bg-red-500 text-white py-4 px-2 mb-6">
+                                <p>{{ props.errors.dateUnique }}</p>
+                            </div>
                             <form @submit.prevent="submit" class="tr">
 
                                 <div class="td">

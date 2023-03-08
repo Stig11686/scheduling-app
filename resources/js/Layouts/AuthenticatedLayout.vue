@@ -13,6 +13,10 @@ const isSuperAdmin = (user) => {
     return userRoles.includes('super-admin');
 }
 
+const getUserRoles = (user) => {
+    return user.roles.map(x => x.name);
+}
+
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -43,7 +47,7 @@ const showingNavigationDropdown = ref(false);
                                     Schedule
                                 </NavLink>
                                 </div>
-                                <div v-if="isSuperAdmin($page.props.auth.user)"  class="hidden space-x-8 sm:-my-px sm:flex">
+                                <div v-if="getUserRoles($page.props.auth.user).includes('super-admin')"  class="hidden space-x-8 sm:-my-px sm:flex">
                                     <AdminNav />
                                 </div>
                             </div>

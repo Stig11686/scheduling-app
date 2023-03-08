@@ -88,7 +88,7 @@
         <form @submit.prevent="submit" class="tr">
             <input type="hidden" id="" name="instance_id" :value="instanceId" />
             <input type="hidden" id="session_id" name="session_id" :value="sessionId" />
-            <div class="td">
+            <div class="td" :class="form.date ? 'bg-transparent' : 'bg-red-500 text-red-900'">
                 <input
                     :type="state.editMode ? 'date' : 'text'"
                     :disabled="state.editMode == false"
@@ -100,17 +100,18 @@
                 />
             </div>
 
-            <div class="td">
+            <div class="td" :class="form.sessionName ? 'bg-transparent' : 'bg-red-500 text-red-900'">
                 <input
                     type="text"
                     id="session_name"
                     name="session_name"
                     disabled
-                    :value="form.sessionName ? form.sessionName.name : '' " class="h-full border-none w-full bg-transparent pl-0"
+                    :value="form.sessionName ? form.sessionName.name : '' "
+                    class="h-full border-none w-full bg-transparent pl-0"
                 />
             </div>
 
-            <div class="td">
+            <div class="td" :class="form.trainer ? 'bg-transparent' : 'bg-red-500 text-white'">
                     <input
                     v-if="state.editMode == false"
                         name="trainer_id"
@@ -151,12 +152,13 @@
                     </select>
             </div>
 
-            <div class="td">
+            <div class="td" :class="form.zoomRoom ? 'bg-transparent' : 'bg-red-500 text-white'">
                     <input
                     v-if="state.editMode == false"
                         name="zoom_id"
                         id="zoom_id"
                         disabled
+                        :class="form.zoomRoom ? 'bg-transparent' : 'bg-red-500 text-white'"
                         class="h-full border-none w-full bg-transparent pl-0"
                         :value="form.zoomRoom ? form.zoomRoom.link : 'Press Edit to Add a Zoom Room'"
                     />

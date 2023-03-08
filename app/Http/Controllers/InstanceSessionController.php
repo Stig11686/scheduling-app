@@ -9,6 +9,8 @@ use App\Models\Trainer;
 use App\Models\ZoomRoom;
 use App\Models\Session;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class InstanceSessionController extends Controller
 {
@@ -79,6 +81,47 @@ class InstanceSessionController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'date' => [
+        //             Rule::unique('instance_session')->where(function($query) use ($request){
+        //                 return $query->where('trainer_id', $request->input('trainerId'))
+        //                              ->where('zoom_room_id', $request->input('zoomRoomId'));
+        //             })
+        //     ]
+        // ]);
+
+        // $validator->messages()->add('date.unique', 'This combination of date, trainer and zoom room already exists and will cause a clash - I cannot save it!');
+
+        // if($validator->fails()) {
+        //     return redirect()->back()->withInput()->withErrors($validator);
+        // }
+
+        $validator = Validator::make($request->all(), [
+            'date' => [
+                Rule::unique('instance_session')->where(function ($query) use ($request) {
+                    if ($request->input('trainerId') && $request->input('zoomRoomId')) {
+                        return $query->where('trainer_id', $request->input('trainerId'))
+                                     ->where('zoom_room_id', $request->input('zoomRoomId'));
+                    } else {
+                        return null;
+                    }
+                }),
+            ],
+            'trainerId' => 'sometimes',
+            'zoomRoomId' => 'sometimes'
+        ]);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($validator->errors()->has('date')) {
+                $validator->errors()->add('dateUnique', 'The combination of date, trainer and zoom room has already been taken - change one these to continue');
+            }
+        });
+
+
+        if($validator->fails()){
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+
         $session = InstanceSession::find($id);
         $session->update([
             'date' => $request->input('date'),

@@ -26,28 +26,30 @@
         <template #default>
             <AdminDataDisplay>
                 <template #data>
-                    <div class="table overflow-x-scroll">
-                        <div class="thead">
-                            <div class="tr">
-                                <div class="td">Name</div>
-                                <div class="td">Review Status</div>
-                                <div class="td">Review Due</div>
-                                <div class="td">Slides Link</div>
-                                <div class="td">Trainer Notes Link</div>
+                    <div class="py-12">
+                        <div class="table overflow-x-scroll">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="td">Name</div>
+                                    <div class="td">Review Status</div>
+                                    <div class="td">Review Due</div>
+                                    <div class="td">Slides Link</div>
+                                    <div class="td">Trainer Notes Link</div>
+                                </div>
+                            </div>
+                            <div class="tbody">
+                                <EditFormSessions v-for="item in $page.props.sessions.data" :key="item.id" role="list"
+                                    :sessionId="item.id"
+                                    :name="item.name"
+                                    :reviewStatus="item.review_status"
+                                    :reviewDue="item.review_due"
+                                    :slides="item.slides"
+                                    :notes="item.trainer_notes"
+                                />
                             </div>
                         </div>
-                        <div class="tbody">
-                            <EditFormSessions v-for="item in $page.props.sessions.data" :key="item.id" role="list"
-                                :sessionId="item.id"
-                                :name="item.name"
-                                :reviewStatus="item.review_status"
-                                :reviewDue="item.review_due"
-                                :slides="item.slides"
-                                :notes="item.trainer_notes"
-                            />
-                        </div>
-                        </div>
-                    <Pagination :links="$page.props.sessions.links" />
+                        <Pagination :links="$page.props.sessions.links" />
+                    </div>
                 </template>
             </AdminDataDisplay>
         </template>
