@@ -73,28 +73,28 @@ class RolesPermissionsSeeder extends Seeder
             'name' => 'super-admin'
         ]);
 
-        $tcg_admin = Role::create([
-            'name' => 'tcg-admin'
+        $admin = Role::create([
+            'name' => 'admin'
         ]);
 
-        $tcg_trainer = Role::create([
-            'name' => 'tcg-trainer'
+        $trainer = Role::create([
+            'name' => 'trainer'
         ]);
 
-        $tcg_learner = Role::create([
-            'name' => 'tcg-learner'
+        $learner = Role::create([
+            'name' => 'learner'
         ]);
 
         //assign permissions to roles
         $super_admin->givePermissionTo(Permission::all());
-        $tcg_admin->givePermissionTo(Permission::all());
-        $tcg_trainer->givePermissionTo([
+        $admin->givePermissionTo(Permission::all());
+        $trainer->givePermissionTo([
             'learner_show',
             'zoom_show',
             'instance_show',
             'instance_edit'
         ]);
-        $tcg_learner->givePermissionTo([
+        $learner->givePermissionTo([
             'instance_show'
         ]);
 

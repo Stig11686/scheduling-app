@@ -7,6 +7,7 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import AdminNav from '@/Components/Admin/AdminNav.vue';
+import LearnerNav from '@/Components/Learner/LearnerNav.vue';
 
 const isSuperAdmin = (user) => {
     const userRoles = user.roles.map(x => x.name);
@@ -50,6 +51,9 @@ const showingNavigationDropdown = ref(false);
                                 <div v-if="getUserRoles($page.props.auth.user).includes('super-admin')"  class="hidden space-x-8 sm:-my-px sm:flex">
                                     <AdminNav />
                                 </div>
+                                <div v-if="getUserRoles($page.props.auth.user).includes('learner')"  class="hidden space-x-8 sm:-my-px sm:flex">
+                                    <LearnerNav />
+                                </div>
                             </div>
                         </div>
 
@@ -83,6 +87,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                        <DropdownLink> {{$page.props.auth.user.id}} </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>

@@ -2,10 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Trainer;
+use App\Models\Learner;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Factories\UserFactory;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -24,30 +28,52 @@ class UserSeeder extends Seeder
 
         $super_admin->assignRole('super-admin');
 
-        $tcg_admin = User::create([
-            'name' => 'tcg-admin',
+        $admin = User::create([
+            'name' => 'admin',
             'email' => 'steve@thecodersguild.org.uk',
             'password' => bcrypt('Erding3r!')
         ]);
 
-        $tcg_admin->assignRole('tcg-admin');
+        $admin->assignRole('admin');
 
-        $tcg_trainer = User::create([
-            'name' => 'tcg-trainer',
+        $trainer = User::create([
+            'name' => 'trainer',
             'email' => 'info@bvswebdesign.co.uk',
             'password' => bcrypt('Erding3r!')
         ]);
 
-        $tcg_trainer->assignRole('tcg-trainer');
+        $trainer->assignRole('trainer');
 
-        $tcg_learner = User::create([
-            'name' => 'tcg-learner',
+        $learner = User::create([
+            'name' => 'learner',
             'email' => 'steven.marks@bvswebdesign.co.uk',
             'password' => bcrypt('Erding3r!')
         ]);
 
-        $tcg_learner->assignRole('tcg-learner');
+        $learner->assignRole('learner');
 
-        User::factory(200)->create();
+        $users = User::factory(200)->create([
+            'password' => Hash::make('password')
+        ]);
+
+        $trainerUsers = $users->take(20);
+        $trainerUsers->each(function($user){
+            Trainer::factory()->create([
+                'user_id' => $user->id
+            ]);
+
+            $user->assignRole('trainer');
+        });
+
+        $learnerUsers = $users->skip(20)->take(180);
+
+        $learnerUsers->each(function($user){
+            Learner::factory()->create([
+                'user_id' => $user->id
+            ]);
+
+            $user->assignRole('learner');
+        });
+
     }
 }

@@ -40,7 +40,10 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'roles' => auth()->user()->roles ?? [],
-            'permissions' => auth()->user->permissions ?? []
+            'permissions' => auth()->user->permissions ?? [],
+            'flash' => [
+                'success' => session('success')
+            ]
         ]);
     }
 }

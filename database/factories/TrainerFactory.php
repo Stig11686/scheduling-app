@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Trainer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,11 +20,9 @@ class TrainerFactory extends Factory
         $status = [0, 1];
 
         return [
-            'user_id' => fake()->unique()->numberBetween(1, 20),
             'status' => $status[array_rand($status, 1)],
             'has_dbs' => $status[array_rand($status, 1)]
         ];
     }
-
 
 }

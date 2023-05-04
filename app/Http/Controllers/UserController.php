@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
+use App\Models\Trainer;
+use App\Models\Learner;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Inertia\Inertia;
@@ -73,15 +75,45 @@ class UserController extends Controller
         return Inertia::render('Admin/Users/UserEdit', compact('user', 'allRoles'));
     }
 
-    public function update(Request $request){
+    // public function update(Request $request){
 
-        dd($request);
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+    //     $request->validate([
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255'],
+    //         //'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+    //         'roles' => 'required'
+    //     ]);
+
+    //     $user = User::find($request->input('id'));
+    //     $roles = $request->input('roles');
+    //     $user->syncRoles([$roles]);
+
+    //     return redirect()->back();
+    // }
+
+    public function update(Request $request)
+    {
+        $validatedData = $this->validateUser($request);
+
+        $user = User::find($request->input('id'));
+        $roles = $request->input('roles');
+        $roleData = $this->syncRoles($user, $roles);
+
+        if ($roleData['isTrainer']) {
+            $this->addTrainer($user);
+        } else {
+            $this->removeTrainer($user);
+        }
+
+        if ($roleData['isLearner']) {
+            $this->addLearner($user);
+        } else {
+            $this->removeLearner($user);
+        }
+
+        return redirect()->back()->with('success', 'User updated successfully.');
     }
+
 
 
     public function destroy(User $user)
@@ -89,4 +121,54 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users');
     }
+
+    private function validateUser(Request $request)
+    {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'roles' => 'required'
+        ]);
+    }
+
+    private function syncRoles(User $user, array $roles)
+    {
+        $user->syncRoles([$roles]);
+
+        return [
+            'isTrainer' => in_array(3, $roles),
+            'isLearner' => in_array(4, $roles),
+        ];
+    }
+
+    private function addTrainer(User $user)
+    {
+        if (!$user->trainer) {
+            $trainer = new Trainer();
+            $trainer->user_id = $user->id;
+            $trainer->save();
+        }
+    }
+
+    private function removeTrainer(User $user)
+    {
+        $user->trainer()->delete();
+    }
+
+    private function addLearner(User $user)
+    {
+        if (!$user->learner) {
+            $learner = new Learner();
+            $learner->user_id = $user->id;
+            $learner->save();
+        }
+    }
+
+    private function removeLearner(User $user)
+    {
+        $user->learner()->delete();
+    }
+
+
+
 }

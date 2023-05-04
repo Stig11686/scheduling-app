@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -50,5 +51,12 @@ class UserFactory extends Factory
         $string = preg_replace('/[^a-z0-9 -]+/', '', $string);
         $string = str_replace(' ', '-', $string);
         return trim($string);
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('learner');
+        });
     }
 }

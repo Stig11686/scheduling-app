@@ -52,6 +52,10 @@ class User extends Authenticatable
         return $this->hasOne(Trainer::class);
     }
 
+    public function learner(){
+        return $this->hasOne(Learner::class);
+    }
+
     public function getSessions(){
         //trainer sessions
         //TODO - Implement learner functionality and return their sessions too!

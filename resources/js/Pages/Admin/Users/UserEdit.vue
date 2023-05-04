@@ -1,6 +1,7 @@
 <script setup>
     import AutheticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import { useForm } from '@inertiajs/inertia-vue3';
+    import { computed } from 'vue';
 
     const props = defineProps({
         user: Object,
@@ -10,16 +11,24 @@
     const roles = props.user[0].roles.map(x => x.id);
 
     const form = useForm({
+        id: props.user[0].id,
         name: props.user[0].name,
         email: props.user[0].email,
-        password: '',
-        password2: '',
         roles: roles
-    })
+    });
+
+    const isTrainerSelected = computed(() => {
+        return form.roles.includes(3); // assuming the trainer role has an id of 3
+    });
+
+    const isLearnerSelected = computed(() => {
+        return form.roles.includes(4); // assuming the trainer role has an id of 3
+    });
+
 
     const submit = () => {
         form.put(route('users.update', props.user[0].id))
-    }
+    };
 
 </script>
 <template>
@@ -32,8 +41,13 @@
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
+                            <div v-if="$page.props.flash.success" class="bg-green-500 text-white py-4 px-2 rounded-md mb-6">
+                                {{ $page.props.flash.success }}
+                            </div>
+
                             <div v-if="Object.keys(props.errors).length > 0" class="bg-red-500 text-white py-4 px-2 mb-6">
-                                <p>{{ props.errors.dateUnique }}</p>
+                                <p v-for="error in props.errors" :key="error
+                                ">{{ error }}</p>
                             </div>
                             <form @submit.prevent="submit" class="space-y-8 divide-y divide-gray-200">
                                 <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
@@ -72,8 +86,55 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="sm:col-span-6" v-if="isTrainerSelected">
+                                        <p>Trainer is selected!</p>
+                                        <fieldset>
+                                            <div class="sm:col-span-4">
+                                                <label for="has_dbs" class="block text-sm font-medium text-gray-700"> Has DBS? </label>
+                                                <input
+                                                    v-model="form.has_dbs"
+                                                    type="checkbox"
+                                                    name="has_dbs"
+                                                    id="has_dbs"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                />
+                                            </div>
+                                            <div class="sm:col-span-4">
+                                                <label for="dbs_expiry" class="block text-sm font-medium text-gray-700"> DBS Expiry date </label>
+                                                <input
+                                                    v-model="form.dbs_expiry"
+                                                    type="date"
+                                                    name="dbs_expiry"
+                                                    id="dbs_expiry"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                />
+                                            </div>
+                                            <div class="sm:col-span-4">
+                                                <label for="dbs_upload" class="block text-sm font-medium text-gray-700"> DBS Upload </label>
+                                                <input
+                                                    type="file"
+                                                    name="dbs_upload"
+                                                    id="dbs_upload"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                />
+                                            </div>
+                                            <div class="sm:col-span-4">
+                                                <label for="name" class="block text-sm font-medium text-gray-700"> Has Completed Mandatory Training </label>
+                                                <input
+                                                    v-model="form.mandatory_training"
+                                                    type="checkbox"
+                                                    name="mandatory_training"
+                                                    id="mandatory_training"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                />
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="sm:col-span-6" v-if="isLearnerSelected">
+                                        <p>Learner is selected!</p>
+                                    </div>
                                     <div class="sm:col-span-4">
-                                        <button @click.prevent="submit" type="submit" v-if="can('instance_edit')" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Submit</button>
+                                        <button @click.prevent="submit" type="submit" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Submit</button>
                                     </div>
                                 </div>
                             </form>
