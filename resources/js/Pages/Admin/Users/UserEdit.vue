@@ -30,6 +30,8 @@
         form.put(route('users.update', props.user[0].id))
     };
 
+    const changes = 'changes';
+
 </script>
 <template>
     <AutheticatedLayout>
@@ -110,7 +112,7 @@
                                                 />
                                             </div>
                                             <div class="sm:col-span-4">
-                                                <label for="dbs_upload" class="block text-sm font-medium text-gray-700"> DBS Upload </label>
+                                                <label for="dbs_upload" class="block text-sm font-medium text-gray-700"> DBS Upload  </label>
                                                 <input
                                                     type="file"
                                                     name="dbs_upload"
