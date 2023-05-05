@@ -5,16 +5,21 @@
 
     const props = defineProps({
         user: Object,
-        errors: Object
+        errors: Object,
+        cohorts: {
+            type: Array,
+            default: []
+        }
     })
 
-    const roles = props.user[0].roles.map(x => x.id);
+    const roles = props.user.roles.map(x => x.id);
 
     const form = useForm({
-        id: props.user[0].id,
-        name: props.user[0].name,
-        email: props.user[0].email,
-        roles: roles
+        id: props.user.id,
+        name: props.user.name,
+        email: props.user.email,
+        roles: roles,
+        cohort_id: props.user.cohort_id
     });
 
     const isTrainerSelected = computed(() => {
@@ -27,7 +32,7 @@
 
 
     const submit = () => {
-        form.put(route('users.update', props.user[0].id))
+        form.put(route('users.update', props.user.id))
     };
 
     const changes = 'changes';
@@ -36,7 +41,7 @@
 <template>
     <AutheticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Manage {{props.user[0].name}} </h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Manage {{props.user.name}} </h2>
         </template>
         <template #default>
             <div class="py-12">
@@ -90,7 +95,7 @@
                                     </div>
                                     <div class="sm:col-span-6" v-if="isTrainerSelected">
                                         <p>Trainer is selected!</p>
-                                        <fieldset>
+                                        <fieldset class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                                             <div class="sm:col-span-4">
                                                 <label for="has_dbs" class="block text-sm font-medium text-gray-700"> Has DBS? </label>
                                                 <input
@@ -98,7 +103,7 @@
                                                     type="checkbox"
                                                     name="has_dbs"
                                                     id="has_dbs"
-                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
                                                 />
                                             </div>
                                             <div class="sm:col-span-4">
@@ -127,13 +132,31 @@
                                                     type="checkbox"
                                                     name="mandatory_training"
                                                     id="mandatory_training"
+                                                    class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block min-w-0 rounded-none rounded-md sm:text-sm border-gray-300"
+                                                />
+                                            </div>
+                                            <div class="sm:col-span-4">
+                                                <label for="dbs_upload" class="block text-sm font-medium text-gray-700"> Mandatory Training Certs </label>
+                                                <input
+                                                    type="file"
+                                                    name="training_certs[]"
+                                                    id="training_certs"
                                                     class="flex-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full min-w-0 rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                                    multiple
                                                 />
                                             </div>
                                         </fieldset>
                                     </div>
                                     <div class="sm:col-span-6" v-if="isLearnerSelected">
                                         <p>Learner is selected!</p>
+                                        <fieldset class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                            <div class="sm:col-span-4">
+                                                <label for="dbs_upload" class="block text-sm font-medium text-gray-700"> Cohort</label>
+                                                <select>
+                                                    <option v-for="cohort in props.cohorts" :key="cohort.id">{{ cohort.name }}</option>
+                                                </select>
+                                            </div>
+                                        </fieldset>
                                     </div>
                                     <div class="sm:col-span-4">
                                         <button @click.prevent="submit" type="submit" class="edit-btn px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 z-10">Submit</button>

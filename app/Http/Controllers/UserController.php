@@ -6,6 +6,7 @@ use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Trainer;
 use App\Models\Learner;
+use App\Models\Cohort;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Inertia\Inertia;
@@ -69,10 +70,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user  = User::where('id', $id)->with('roles')->get();
+        $user = User::with(['roles', 'learner.cohort'])->find($id);
         $allRoles = Role::all();
+        $cohorts = Cohort::all();
 
-        return Inertia::render('Admin/Users/UserEdit', compact('user', 'allRoles'));
+        return Inertia::render('Admin/Users/UserEdit', compact('user', 'allRoles', 'cohorts'));
     }
 
     // public function update(Request $request){
