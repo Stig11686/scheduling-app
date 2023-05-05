@@ -18,4 +18,8 @@ class Trainer extends Model
     function user(){
         return $this->belongsTo(User::class);
     }
+
+    function courses(){
+        return $this->belongsToMany(Course::class);
+    }
 }

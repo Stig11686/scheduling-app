@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cohort;
 use App\Models\Trainer;
 use App\Models\Learner;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -52,6 +53,8 @@ class UserSeeder extends Seeder
 
         $learner->assignRole('learner');
 
+        $cohorts = Cohort::all();
+
         $users = User::factory(200)->create([
             'password' => Hash::make('password')
         ]);
@@ -67,11 +70,18 @@ class UserSeeder extends Seeder
 
         $learnerUsers = $users->skip(20)->take(180);
 
-        $learnerUsers->each(function($user){
-            Learner::factory()->create([
+        $learnerUsers->each(function($user) use ($cohorts){
+            // Learner::factory()->create([
+            //     'user_id' => $user->id,
+            //     'cohort_id' => $cohorts->random()->id
+            // ]);
+
+            // $user->assignRole('learner');
+            $cohort = $cohorts->where('places', '>', 0)->random();
+            $cohort->learners()->create([
                 'user_id' => $user->id
             ]);
-
+            $cohort->decrement('places');
             $user->assignRole('learner');
         });
 

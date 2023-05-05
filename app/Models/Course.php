@@ -12,7 +12,7 @@ class Course extends Model
 
     protected $fillable = ['name'];
 
-    function instance(){
+    function instances(){
         return $this->hasMany(Instance::class);
     }
 
@@ -28,4 +28,20 @@ class Course extends Model
             ),
         ];
     }
+
+    public function cohorts()
+    {
+        return $this->hasMany(Cohort::class);
+    }
+
+    public function trainer()
+    {
+        return $this->belongsToMany(Trainer::class, 'user_id');
+    }
+
+    public function learners()
+    {
+        return $this->hasManyThrough(Learner::class, Cohort::class);
+    }
+
 }

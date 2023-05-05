@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CourseController extends Controller
@@ -15,7 +16,29 @@ class CourseController extends Controller
      */
     public function index()
     {
-       $courses = Course::paginate(10);
+        $courses = Course::with(['instances.cohort'])->get();
+
+        $courses->transform(function($course) {
+            $learner_count = $course->instances->flatMap(function($instance) {
+                return $instance->cohort->learners;
+            })->unique('id')->count();
+
+            return [
+                'id' => $course->id,
+                'name' => $course->name,
+                'learner_count' => $learner_count,
+            ];
+        });
+
+        $courses = $courses->sortByDesc('learner_count');
+
+        // $courses = DB::table('courses')
+        // ->join('instances', 'instances.course_id', '=', 'courses.id')
+        // ->join('cohorts', 'cohorts.id', '=', 'instances.cohort_id')
+        // ->select('courses.*', DB::raw('COUNT(learners.id) as learner_count'))
+        // ->leftJoin('learners', 'learners.cohort_id', '=', 'cohorts.id')
+        // ->groupBy('courses.id')
+        // ->paginate(10);
 
        return Inertia::render('Admin/Courses/Courses', compact('courses'));
     }
@@ -55,9 +78,17 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course)
+    public function show($id)
     {
-        //
+        $course = Course::findOrFail($id);
+
+        $instances = $course->instances()->with(['cohort' => function($query) {
+            $query->select('id', 'name')
+                ->withCount('learners');
+        }])
+        ->get();
+
+        return Inertia::render('Admin/Courses/CourseShow', compact('course', 'instances'));
     }
 
     /**

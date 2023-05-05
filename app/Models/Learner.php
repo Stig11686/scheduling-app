@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Learner extends Model
 {
     use HasFactory;
+
+    public function cohort()
+    {
+        return $this->belongsTo(Cohort::class);
+    }
+
+    public function instance()
+    {
+        return $this->belongsTo(Instance::class);
+    }
+
+    public function tasks(){
+        return $this->hasMany(Task::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

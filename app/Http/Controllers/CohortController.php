@@ -15,7 +15,7 @@ class CohortController extends Controller
      */
     public function index()
     {
-        $cohorts = Cohort::paginate(10);
+        $cohorts = Cohort::withCount('learners')->paginate(10);
 
         return Inertia::render('Admin/Cohorts/Cohorts', compact('cohorts'));
     }
@@ -59,9 +59,10 @@ class CohortController extends Controller
      * @param  \App\Models\Cohort  $cohort
      * @return \Illuminate\Http\Response
      */
-    public function show(Cohort $cohort)
+    public function show($id)
     {
-        //
+        $cohort = Cohort::with('learners.user')->find($id);
+        return Inertia::render('Admin/Cohorts/CohortShow', compact('cohort'));
     }
 
     /**
