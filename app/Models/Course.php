@@ -12,10 +12,6 @@ class Course extends Model
 
     protected $fillable = ['name'];
 
-    function instances(){
-        return $this->hasMany(Instance::class);
-    }
-
     public function getLinksAttribute()
     {
         return [

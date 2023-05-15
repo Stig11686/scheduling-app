@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('places')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->foreignId('course_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

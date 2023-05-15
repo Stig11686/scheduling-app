@@ -27,4 +27,9 @@ class Instance extends Model
         return $this->hasMany(InstanceSession::class)->orderBy('date');
     }
 
+    public function learners()
+    {
+        return $this->hasMany(Learner::class);
+    }
+
 }

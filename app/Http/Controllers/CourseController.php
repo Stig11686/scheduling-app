@@ -16,11 +16,11 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::with(['instances.cohort'])->get();
+        $courses = Course::with(['cohorts'])->get();
 
         $courses->transform(function($course) {
-            $learner_count = $course->instances->flatMap(function($instance) {
-                return $instance->cohort->learners;
+            $learner_count = $course->cohorts->flatMap(function($cohort) {
+                return $cohort->learners;
             })->unique('id')->count();
 
             return [
@@ -31,14 +31,6 @@ class CourseController extends Controller
         });
 
         $courses = $courses->sortByDesc('learner_count');
-
-        // $courses = DB::table('courses')
-        // ->join('instances', 'instances.course_id', '=', 'courses.id')
-        // ->join('cohorts', 'cohorts.id', '=', 'instances.cohort_id')
-        // ->select('courses.*', DB::raw('COUNT(learners.id) as learner_count'))
-        // ->leftJoin('learners', 'learners.cohort_id', '=', 'cohorts.id')
-        // ->groupBy('courses.id')
-        // ->paginate(10);
 
        return Inertia::render('Admin/Courses/Courses', compact('courses'));
     }
@@ -82,13 +74,10 @@ class CourseController extends Controller
     {
         $course = Course::findOrFail($id);
 
-        $instances = $course->instances()->with(['cohort' => function($query) {
-            $query->select('id', 'name')
-                ->withCount('learners');
-        }])
+        $cohorts = $course->cohorts()->withCount('learners')
         ->get();
 
-        return Inertia::render('Admin/Courses/CourseShow', compact('course', 'instances'));
+        return Inertia::render('Admin/Courses/CourseShow', compact('course', 'cohorts'));
     }
 
     /**

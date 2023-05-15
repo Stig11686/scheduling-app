@@ -10,7 +10,7 @@
     <AuthenticatedLayout>
         <template #header>
             <AdminPageHeader
-                :title="$page.props.cohort.name">
+                :title="`${$page.props.cohort.name} Users List`">
             </AdminPageHeader>
         </template>
         <template #default>

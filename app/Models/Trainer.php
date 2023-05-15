@@ -11,8 +11,8 @@ class Trainer extends Model
 
     protected $fillable = ['name', 'email', 'phone', 'status', 'has_dbs', 'dbs_date', 'dbs_cert_path', 'mandatory_training_cert_1', 'has_completed_mandatory_training'];
 
-    function session(){
-        return $this->belongsTo(Session::class);
+    function cohort_session(){
+        $this->belongsTo(CohortSession::class);
     }
 
     function user(){

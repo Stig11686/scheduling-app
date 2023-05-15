@@ -14,11 +14,6 @@ class Learner extends Model
         return $this->belongsTo(Cohort::class);
     }
 
-    public function instance()
-    {
-        return $this->belongsTo(Instance::class);
-    }
-
     public function tasks(){
         return $this->hasMany(Task::class);
     }

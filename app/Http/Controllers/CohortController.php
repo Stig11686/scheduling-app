@@ -114,4 +114,11 @@ class CohortController extends Controller
 
         return redirect()->route('cohorts');
     }
+
+    public function schedule($id){
+        $cohort = Cohort::find($id);
+        $sessions = $cohort->sessions;
+
+        return Inertia::render('Admin/Cohorts/CohortSessions', compact('sessions','cohort'));
+    }
 }

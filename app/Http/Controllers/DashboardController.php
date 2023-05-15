@@ -13,17 +13,20 @@ class DashboardController extends Controller
 
        $data = array();
 
+       if(in_array('learner', $user_roles) || in_array('trainer', $user_roles)){
        $data['next_session'] = array(
         "title" => 'Next Session',
-        "data" => $user->get_next_session()
+        "data" => $user->get_next_session($user)
        );
+    }
 
        if(in_array('admin', $user_roles) || in_array('super-admin', $user_roles)){
-            $data['weeks_sessions'] = array(
-                "title" => "This Weeks Sessions",
-                "data" => $user->seven_days_sessions()
+            $data['upcoming_sessions'] = array(
+                "title" => "Upcoming Sessions",
+                "data" => $user->upcomingSessions()
             );
        }
+
 
        return Inertia::render('Dashboard', compact('data'));
 

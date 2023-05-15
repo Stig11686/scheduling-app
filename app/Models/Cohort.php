@@ -11,11 +11,6 @@ class Cohort extends Model
 
     protected $fillable = ['name', 'places', 'start_date', 'end_date'];
 
-    public function instances()
-    {
-        return $this->hasMany(Instance::class)->with(['cohort', 'cohort.learners']);
-    }
-
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -23,7 +18,7 @@ class Cohort extends Model
 
     public function sessions()
     {
-        return $this->belongsToMany(Session::class);
+        return $this->hasManyThrough(Session::class, CohortSession::class, 'cohort_id', 'id', 'id', 'session_id');
     }
 
     public function learners()

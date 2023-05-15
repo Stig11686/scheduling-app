@@ -11,14 +11,6 @@ class Session extends Model
 
     protected $fillable = ['name', 'review_due', 'review_status', 'slides', 'trainer_notes'];
 
-    function instances(){
-        return $this->belongsToMany(Instance::class);
-    }
-
-    function trainers(){
-        return $this->hasManyThrough(Trainer::class, InstanceSession::class);
-    }
-
     public function cohorts()
     {
         return $this->belongsToMany(Cohort::class);
@@ -26,6 +18,6 @@ class Session extends Model
 
     public function tasks()
     {
-        return $this->belongsToMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 }

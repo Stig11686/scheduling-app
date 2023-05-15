@@ -23,6 +23,7 @@ import ComingSoon from '@/Components/DashboardComponents/ComingSoon.vue';
                             <DashboardTileVue
                             :title=item.title
                             :data=item.data
+                            :linksTo="'/schedule/'"
                             >
                             </DashboardTileVue>
                         </div>

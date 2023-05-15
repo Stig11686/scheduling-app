@@ -38,11 +38,4 @@ class InstanceSession extends Pivot
         return $this->hasOneThrough(Trainer::class, User::class, 'user_id');
     }
 
-    public function cohort(){
-        return $this->hasOne(Cohort::class, 'id', 'cohort_id');
-    }
-
-    // public function course(){
-    //     return $this->hasOneThrough(Instance::class);
-    // }
 }

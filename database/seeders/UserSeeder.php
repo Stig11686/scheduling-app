@@ -3,87 +3,84 @@
 namespace Database\Seeders;
 
 use App\Models\Cohort;
-use App\Models\Trainer;
 use App\Models\Learner;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Trainer;
 use App\Models\User;
-use Database\Factories\UserFactory;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $super_admin = User::create([
+        // Create super admin
+        User::create([
             'name' => 'Steve',
             'email' => 'stevenmarks75@gmail.com',
             'password' => bcrypt('Erding3r!')
-        ]);
+        ])->assignRole('super-admin');
 
-        $super_admin->assignRole('super-admin');
-
-        $admin = User::create([
+        // Create admin
+        User::create([
             'name' => 'admin',
             'email' => 'steve@thecodersguild.org.uk',
             'password' => bcrypt('Erding3r!')
-        ]);
+        ])->assignRole('admin');
 
-        $admin->assignRole('admin');
-
+        // Create trainer
         $trainer = User::create([
             'name' => 'trainer',
             'email' => 'info@bvswebdesign.co.uk',
             'password' => bcrypt('Erding3r!')
+        ])->assignRole('trainer');
+
+        Trainer::create([
+            'user_id' => $trainer->id
         ]);
 
-        $trainer->assignRole('trainer');
-
-        $learner = User::create([
+        $trainer = User::create([
             'name' => 'learner',
             'email' => 'steven.marks@bvswebdesign.co.uk',
             'password' => bcrypt('Erding3r!')
+        ])->assignRole('learner');
+
+        Learner::create([
+            'user_id' => $trainer->id,
+            'cohort_id' => 1
         ]);
 
-        $learner->assignRole('learner');
+        $cohort_one = Cohort::find(1);
+        $cohort_one->decrement('places');
 
+        // Create learners and assign to cohorts
         $cohorts = Cohort::all();
-
         $users = User::factory(200)->create([
             'password' => Hash::make('password')
         ]);
-
-        $trainerUsers = $users->take(20);
-        $trainerUsers->each(function($user){
-            Trainer::factory()->create([
-                'user_id' => $user->id
-            ]);
-
-            $user->assignRole('trainer');
-        });
-
         $learnerUsers = $users->skip(20)->take(180);
-
-        $learnerUsers->each(function($user) use ($cohorts){
-            // Learner::factory()->create([
-            //     'user_id' => $user->id,
-            //     'cohort_id' => $cohorts->random()->id
-            // ]);
-
-            // $user->assignRole('learner');
+        foreach ($learnerUsers as $user) {
+            // Create a learner entry
             $cohort = $cohorts->where('places', '>', 0)->random();
-            $cohort->learners()->create([
-                'user_id' => $user->id
+            $learner = Learner::create([
+                'user_id' => $user->id,
+                'cohort_id' => $cohort->id
             ]);
+
             $cohort->decrement('places');
             $user->assignRole('learner');
-        });
+        }
 
+        // Create trainer users
+        $trainerUsers = $users->take(20);
+        foreach ($trainerUsers as $user) {
+            Trainer::create([
+                'user_id' => $user->id,
+                'has_dbs' => 1
+            ]);
+            $user->assignRole('trainer');
+        }
     }
 }
+
+
