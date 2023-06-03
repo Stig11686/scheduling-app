@@ -39,6 +39,8 @@
                     <DropdownLink :href="route('funders')">Funders</DropdownLink>
                     <DropdownLink :href="route('sessions')">Sessions</DropdownLink>
                     <DropdownLink :href="route('users')">Users</DropdownLink>
+                    <DropdownLink :href="route('trainers')">Trainers</DropdownLink>
+                    <DropdownLink :href="route('learners')">Learners</DropdownLink>
                 </template>
             </Dropdown>
         </div>

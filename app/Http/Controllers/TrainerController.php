@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class TrainerController extends Controller
 {
@@ -15,9 +16,9 @@ class TrainerController extends Controller
      */
     public function index()
     {
-        $trainers = Trainer::with('user')->get();
+        $trainers = Trainer::with('user', 'courses')->paginate(20);
 
-        return view('trainers.index', compact('trainers'));
+        return Inertia::render('Admin/Trainers/Trainers', compact('trainers'));
     }
 
     /**

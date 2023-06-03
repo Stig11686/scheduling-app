@@ -74,9 +74,11 @@ class SessionController extends Controller
      * @param  \App\Models\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function edit(Session $session)
+    public function edit($id)
     {
-        return view('sessions.edit', compact('session'));
+        $session = Session::find($id);
+        dd($session);
+        return view(Inertia::render('Admin/Sessions/EditSession'), compact('session'));
     }
 
     /**

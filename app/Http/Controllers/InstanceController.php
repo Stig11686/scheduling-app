@@ -26,7 +26,7 @@ class InstanceController extends Controller
 
     public function index()
     {
-       $instances = Instance::with(['course', 'cohort', 'instanceSessions.trainer', 'instanceSessions.zoomRoom', 'instanceSessions.session'])->paginate(10);
+       $instances = Cohort::with(['course', 'cohortSession.trainer.user', 'cohortSession.zoom_room', 'cohortSession.session'])->paginate(10);
        $zoom_rooms = ZoomRoom::get();
        $trainers = Trainer::with('user')->get();
 

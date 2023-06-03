@@ -1,5 +1,5 @@
 <script setup>
-    import formatDate from '@/helpers/formatDate';
+    import {formatDate} from '@/helpers/formatDate';
     import { reactive } from 'vue';
     import { Link, useForm } from '@inertiajs/inertia-vue3';
 
@@ -118,7 +118,7 @@
                         id="trainer_id"
                         disabled
                         class="h-full border-none w-full bg-transparent pl-0"
-                        :value="form.trainer ? form.trainer.name : 'Press Edit to Add a Trainer'"
+                        :value="form.trainer ? form.trainer.user.name : 'Press Edit to Add a Trainer'"
                     />
 
                     <select

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3'
-import formatDate from '../helpers/formatDate.js'
+import { formatDate, isValidDate } from '../helpers/formatDate'
 const props = defineProps({
     title: {
         type: String,
@@ -54,6 +54,7 @@ function isLink(str) {
   return regex.test(str);
 }
 
+
 </script>
 
 <template class="overflow-hidden h-100">
@@ -78,7 +79,7 @@ function isLink(str) {
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
                 <tr v-for="item in data" :key="item.id">
-                    <td v-for="value in item" :key="value" class="w-1/3 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"><a v-if="isLink(value)" :href="value" _target="blank">{{value}}</a><span v-else>{{ value }}</span></td>
+                    <td v-for="value in item" :key="value" class="w-1/3 whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"><a v-if="isLink(value)" :href="value" _target="blank">{{value}}</a><span v-else-if="isValidDate(value)">{{ formatDate(value) }}</span><span v-else>{{ value }}</span></td>
                 </tr>
                 </tbody>
             </table>

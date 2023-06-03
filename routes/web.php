@@ -11,9 +11,10 @@ use App\Http\Controllers\InstanceController;
 use App\Http\Controllers\InstanceSessionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\TrainerController;
+use App\Http\Controllers\LearnerController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,8 @@ Route::get('/', function () {
 Route::group(['middleware' => ['auth', 'verified']], function(){
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::get('/trainers', [TrainerController::class, 'index'])->name('trainers');
+    Route::get('/learners', [LearnerController::class, 'index'])->name('learners');
     Route::get('/cohorts/{id}/schedule', [CohortController::class, 'schedule'])->name('cohorts.schedule');
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
     Route::resource('courses', CourseController::class, ['names' => [

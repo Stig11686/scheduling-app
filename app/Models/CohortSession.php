@@ -18,4 +18,12 @@ class CohortSession extends Model
     public function zoom_room(){
         return $this->belongsTo(ZoomRoom::class);
     }
+
+    public function cohort(){
+        return $this->belongsTo(Cohort::class);
+    }
+
+    public function session(){
+        return $this->belongsTo(Session::class);
+    }
 }

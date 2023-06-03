@@ -2,8 +2,6 @@
 import { Inertia } from '@inertiajs/inertia';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import DashboardTileVue from '@/Components/DashboardTile.vue';
-import NextSession from '@/Components/DashboardComponents/NextSession.vue';
-import ComingSoon from '@/Components/DashboardComponents/ComingSoon.vue';
 
 
 </script>

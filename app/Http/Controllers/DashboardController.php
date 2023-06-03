@@ -16,7 +16,7 @@ class DashboardController extends Controller
        if(in_array('learner', $user_roles) || in_array('trainer', $user_roles)){
        $data['next_session'] = array(
         "title" => 'Next Session',
-        "data" => $user->get_next_session($user)
+        "data" => $user->get_next_session()
        );
     }
 

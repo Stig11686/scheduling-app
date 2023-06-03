@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayoutVue from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
-import formatDate from '../helpers/formatDate.js'
+import {formatDate} from '../helpers/formatDate'
 
 
 </script>
@@ -24,6 +24,7 @@ import formatDate from '../helpers/formatDate.js'
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Date</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Session</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Course/Cohort</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Trainer</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Zoom Link</th>
                         </tr>
                         </thead>
@@ -38,6 +39,7 @@ import formatDate from '../helpers/formatDate.js'
                                 {{ item.course }} <br>
                                 {{ item.cohort }}
                             </td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ item.trainer  }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a :href="item.zoom">{{ item.zoom  }}</a></td>
                         </tr>
                         </tbody>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\InstanceSession;
+use App\Models\CohortSession;
 use App\Models\Cohort;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,21 +26,20 @@ class ScheduleController extends Controller
 
         if ($user->hasRole('learner')) {
 
-            $learnerCohort = $user->learner->instance()->get();
-            dd($learnerCohort);
+            $learnerCohort = $user->learner->cohort()->get();
 
-        $learnerSessions = InstanceSession::whereIn('cohort_id', $learnerCohort->pluck('id')->toArray())
-                    ->with(['trainer', 'session', 'cohort', 'instance.course'])
+            $learnerSessions = CohortSession::whereIn('cohort_id', $learnerCohort->pluck('id')->toArray())
+                    ->with(['trainer', 'session', 'cohort', 'zoom_room'])
                     ->orderBy('date')
                     ->get()
                     ->map(function ($session) {
                         return [
                             'id' => $session->id,
                             'date' => $session->date,
-                            'zoom' => $session->zoomRoom->link,
+                            'zoom' => $session->zoom_room ? $session->zoom_room->link : 'No Zoom Room Assigned',
                             'cohort' => $session->cohort->name,
-                            'course' => $session->instance->course->name,
-                            'trainer' => $session->trainer ? $session->trainer->name : 'No trainer assigned',
+                            'course' => $session->cohort->course->name,
+                            'trainer' => $session->trainer ? $session->trainer->user->name : '',
                             'name' => $session->session ? $session->session->name : 'Session name not available',
                         ];
                     });
@@ -51,14 +50,14 @@ class ScheduleController extends Controller
                 $sessions = $learnerSessions->merge($trainerSessions);
             } else {
                 $nextMonth = Carbon::now()->addMonth();
-                $sessions = $learnerSessions ?? $trainerSessions ?? InstanceSession::whereBetween('date', [Carbon::now(), $nextMonth])->with(['trainer', 'session', 'cohort', 'instance.course'])->orderBy('date')->get()->map(function ($session) {
+                $sessions = $learnerSessions ?? $trainerSessions ?? CohortSession::whereBetween('date', [Carbon::now(), $nextMonth])->with(['trainer', 'session', 'cohort', 'cohort.course'])->orderBy('date')->get()->map(function ($session) {
                     return [
                         'id' => $session->id,
                         'date' => $session->date,
-                        'zoom' => $session->zoomRoom->link,
+                        'zoom' => $session->zoom_room ? $session->zoom_room->link : 'No Room Assigned',
                         'cohort' => $session->cohort->name,
-                        'course' => $session->instance->course->name,
-                        'trainer' => $session->trainer ? $session->trainer->name : 'No trainer assigned',
+                        'course' => $session->cohort->course->name,
+                        'trainer' => $session->trainer ? $session->trainer->user->name : 'No trainer assigned',
                         'name' => $session->session ? $session->session->name : 'Session name not available',
                     ];
                 });;

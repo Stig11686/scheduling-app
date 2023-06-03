@@ -3,7 +3,7 @@
     import AdminPageHeader from '@/Components/Admin/AdminPageHeader.vue';
     import AdminDataDisplay from '@/Components/Admin/AdminDataDisplay.vue';
     import Accordion from '@/Components/Accordion.vue';
-    import formatDate from '@/helpers/formatDate.js';
+    import {formatDate} from '@/helpers/formatDate';
     import { Link } from '@inertiajs/inertia-vue3';
     import Pagination from '@/Components/Pagination.vue';
     import EditForm from '@/Pages/Admin/CurrentCourses/Components/EditForm.vue';
@@ -24,7 +24,7 @@
                 <template #data>
                     <ul>
                             <li v-for="item in $page.props.instances.data" :key="item.id" role="list" class="divide-y space-y-4 divide-gray-200 overflow-x-auto">
-                                <Accordion :instanceId="item.id" :title="item.course.name" :cohort="item.cohort.name">
+                                <Accordion :instanceId="item.id" :title="item.course.name" :cohort="item.name">
                                     <template #content>
                                         <div class="table overflow-x-scroll">
                                             <div class="thead">
@@ -36,7 +36,7 @@
                                                 </div>
                                             </div>
                                             <div class="tbody">
-                                                <EditForm v-for="session in item.instance_sessions" :key="session.id"
+                                                <EditForm v-for="session in item.cohort_session" :key="session.id"
                                                     :instanceId=session.instance_id
                                                     :instanceSessionId="session.id"
                                                     :sessionId=session.session_id

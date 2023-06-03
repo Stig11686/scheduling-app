@@ -25,4 +25,8 @@ class Cohort extends Model
     {
         return $this->hasMany(Learner::class);
     }
+
+    public function cohortSession(){
+        return $this->hasMany(CohortSession::class);
+    }
 }

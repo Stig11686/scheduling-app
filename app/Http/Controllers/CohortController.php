@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cohort;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\CohortSession;
 
 class CohortController extends Controller
 {
@@ -117,8 +118,8 @@ class CohortController extends Controller
 
     public function schedule($id){
         $cohort = Cohort::find($id);
-        $sessions = $cohort->sessions;
+        $sessions = CohortSession::where('cohort_id', $id)->with('cohort', 'session', 'trainer', 'zoom_room')->get();
 
-        return Inertia::render('Admin/Cohorts/CohortSessions', compact('sessions','cohort'));
+        return Inertia::render('Admin/Cohorts/CohortSessions', compact('sessions', 'cohort'));
     }
 }

@@ -4,7 +4,7 @@
     import AdminDataDisplay from '@/Components/Admin/AdminDataDisplay.vue';
     import { Link, useForm } from '@inertiajs/inertia-vue3';
     import Pagination from '@/Components/Pagination.vue';
-    import formatDate from '@/helpers/formatDate';
+    import {formatDate} from '@/helpers/formatDate';
 
     const form = useForm();
 
