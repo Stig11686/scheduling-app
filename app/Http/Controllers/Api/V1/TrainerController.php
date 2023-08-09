@@ -17,7 +17,7 @@ class TrainerController extends Controller
      */
     public function index()
     {
-        return new TrainerCollection( Trainer::all() );
+        return new TrainerCollection( Trainer::with('user')->get() );
     }
 
     /**

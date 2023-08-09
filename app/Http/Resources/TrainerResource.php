@@ -17,6 +17,21 @@ class TrainerResource extends JsonResource
      */
     public function toArray($request)
     {
-       return parent::toArray($request);
+       return [
+        'id' => $this->id,
+        'user_id' => $this->user_id,
+        'name' => $this->user->name,
+        'email' => $this->user->email,
+        'has_dbs' => $this->has_dbs,
+        'dbs_date' => $this->dbs_date ? $this->dbs_date : null,
+        'dbs_renewal_date' => $this->dbs_renewal_date ? $this->dbs_renewal_date : null,
+        'dbs_cert_path' => $this->dbs_cert_path ? $this->dbs_cert_path : null,
+        'has_completed_madatory_training' => $this->has_completed_mandatory_training,
+        'madatory_training_cert_5' => $this->mandatory_training_cert_5 ? $this->mandatory_training_cert_5 : null,
+        'madatory_training_cert_4' => $this->mandatory_training_cert_4 ? $this->mandatory_training_cert_4 : null,
+        'madatory_training_cert_3' => $this->mandatory_training_cert_3 ? $this->mandatory_training_cert_3 : null,
+        'madatory_training_cert_2' => $this->mandatory_training_cert_2 ? $this->mandatory_training_cert_2 : null,
+        'madatory_training_cert_1' => $this->mandatory_training_cert_1 ? $this->mandatory_training_cert_1 : null
+       ];
     }
 }
