@@ -15,8 +15,8 @@ class InstanceResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'courseName' => $this->course->name,
-            'cohortName' => $this->name,
+            'course_name' => $this->course->name,
+            'cohort_name' => $this->name,
             'sessions' => CohortSessionResource::collection($this->cohortSession),
         ];
 
