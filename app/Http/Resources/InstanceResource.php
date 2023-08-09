@@ -16,8 +16,8 @@ class InstanceResource extends JsonResource
     {
         return [
             'courseName' => $this->course->name,
-            'cohortName' => $this->cohort->name,
-            'sessions' => InstanceSessionResource::collection($this->whenLoaded('sessions'))
+            'cohortName' => $this->name,
+            'sessions' => CohortSessionResource::collection($this->cohortSession),
         ];
 
     }

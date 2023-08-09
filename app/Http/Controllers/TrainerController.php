@@ -16,7 +16,8 @@ class TrainerController extends Controller
      */
     public function index()
     {
-        $trainers = Trainer::with('user', 'courses')->paginate(20);
+        $trainers = Trainer::with('user', 'courses'
+                                                                                        )->paginate(20);
 
         return Inertia::render('Admin/Trainers/Trainers', compact('trainers'));
     }

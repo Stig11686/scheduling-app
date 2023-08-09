@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function(){
+    Route::apiResource('/schedule', ScheduleController::class);
+    Route::apiResource('/cohorts', CohortController::class);
+    Route::apiResource('/courses', CourseController::class);
+    Route::apiResource('/sessions', SessionController::class);
+    Route::apiResource('/trainer', TrainerController::class);
+});
