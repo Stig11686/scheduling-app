@@ -23,5 +23,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
     Route::apiResource('/cohorts', CohortController::class);
     Route::apiResource('/courses', CourseController::class);
     Route::apiResource('/sessions', SessionController::class);
-    Route::apiResource('/trainer', TrainerController::class);
+    Route::apiResource('/trainers', TrainerController::class);
 });
