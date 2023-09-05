@@ -23,6 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
+
+
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function(){
     Route::apiResource('/schedule', ScheduleController::class);
     Route::apiResource('/cohorts', CohortController::class);

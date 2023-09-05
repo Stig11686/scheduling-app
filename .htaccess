@@ -1,0 +1,5 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^scheduling\.bvswebdesign\.co\.uk$
+RewriteRule ^/?$ "https\:\/\/scheduling\.bvswebdesign\.co\.uk\/" [R=301,L]
+
