@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Authentication routes
+
+require __DIR__.'/auth.php';
+
 Route::middleware(['auth:sanctum'])->group(function () {
     // Define routes that require authentication here
-});
 
-// Authentication routes
-require __DIR__.'/auth.php';
+});
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function(){
     Route::apiResource('/schedule', ScheduleController::class);
