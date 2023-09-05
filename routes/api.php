@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 // Authentication routes
 
 require __DIR__.'/auth.php';
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // Define routes that require authentication here
